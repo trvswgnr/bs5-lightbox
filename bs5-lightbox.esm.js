@@ -75,9 +75,7 @@ class Lightbox {
 	#isEmbed(src) {
 		const regex = new RegExp(this.#types.join('|'));
 		const isEmbed = regex.test(src);
-		console.log(isEmbed);
 		const isImg = /\.(png|jpe?g|gif|svg|webp)/.test(src);
-		console.log(isImg)
 		return isEmbed || !isImg;
 	}
 
@@ -85,7 +83,7 @@ class Lightbox {
 		const template = document.createElement('template');
 		const slidesHtml = this.sources.map((src, i) => {
 			src = src.replace(/\/$/, '');
-			let inner = `<img src="${src}" class="d-block w-100" />`;
+			let inner = `<img src="${src}" class="d-block w-100 position-relative" style="z-index: 1;" onload="this.previousSibling.remove()"/>`;
 			let attributes = '';
 			const instagramEmbed = this.#getInstagramEmbed(src);
 			const youtubeId = this.#getYoutubeId(src);
@@ -97,7 +95,8 @@ class Lightbox {
 				}
 				inner = instagramEmbed || `<div class="ratio ratio-16x9"><iframe src="${src}" ${attributes} allowfullscreen></iframe></div>`;
 			}
-			return `<div class="carousel-item ${!i ? 'active' : ''}">${inner}</div>`
+			const spinner = `<div class="position-absolute top-50 start-50 translate-middle text-white"><div class="spinner-border" style="width: 3rem; height: 3rem;" role="status"></div></div>`;
+			return `<div class="carousel-item ${!i ? 'active' : ''}">${spinner}${inner}</div>`
 		}).join('');
 		const controlsHtml = this.sources.length < 2 ? '' : `
 			<button class="carousel-control carousel-control-prev h-75 m-auto" type="button" data-bs-target="#lightboxCarousel-${this.#hash}" data-bs-slide="prev">
@@ -131,7 +130,7 @@ class Lightbox {
 		const html = `
 			<div class="modal lightbox fade" id="lightboxModal-${this.#hash}" tabindex="-1" aria-hidden="true">
 				<div class="modal-dialog modal-dialog-centered modal-xl">
-					<div class="modal-content border-0">
+					<div class="modal-content border-0 bg-transparent">
 						<div class="modal-body p-0">
 							<button type="button" class="btn-close position-absolute top-0 end-0 p-3" data-bs-dismiss="modal" aria-label="Close" style="z-index: 2;"></button>
 						</div>
