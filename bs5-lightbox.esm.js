@@ -5,7 +5,7 @@
  * @module bs5-lightbox
  */
 
-import { Modal, Carousel } from 'bootstrap';
+import * as bootstrap from 'bootstrap';
 
 class Lightbox {
 	#settings = {
@@ -56,7 +56,6 @@ class Lightbox {
 			galleryTarget = this.el.dataset.gallery;
 		}
 		const gallery = galleryTarget ? [...new Set(Array.from(document.querySelectorAll(`[data-gallery="${galleryTarget}"]`), v => `${v.dataset.type ? 'embed' : ''}${this.#getSrc(v)}`))] : [this.src];
-		console.log(gallery);
 		return gallery; 
 	}
 
@@ -116,7 +115,7 @@ class Lightbox {
 
 		template.innerHTML = html.trim();
 		this.carouselEl = template.content.firstChild;
-		this.carousel = new Carousel(this.carouselEl, {
+		this.carousel = new bootstrap.Carousel(this.carouselEl, {
 			ride: false,
 			interval: false
 		});
@@ -143,7 +142,7 @@ class Lightbox {
 		this.modalEl.addEventListener('hidden.bs.modal', e => this.modalEl.remove());
 		document.body.appendChild(this.modalEl);
 
-		this.modal = new Modal(this.modalEl);
+		this.modal = new bootstrap.Modal(this.modalEl);
 		this.modal.show();
 	}
 
