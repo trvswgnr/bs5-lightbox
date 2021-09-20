@@ -5,7 +5,7 @@
  * @module bs5-lightbox
  */
 
-import { Modal } from 'bootstrap/js/dist/modal';
+import Modal from 'bootstrap/js/dist/modal';
 
 class Lightbox {
 	#settings = {
