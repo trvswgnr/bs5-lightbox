@@ -5,8 +5,7 @@
  * @module bs5-lightbox
  */
 
- import Modal from 'bootstrap/js/dist/modal';
- import Carousel from 'bootstrap/js/dist/carousel';
+ import { Modal } from 'bootstrap/js/dist/modal';
  
  class Lightbox {
      #settings = {
@@ -51,7 +50,7 @@
              </button>`;
  
          const html = `
-             <div id="lightboxCarousel-${this.#hash}" class="lightbox-carousel carousel" data-interval="false">
+             <div id="lightboxCarousel-${this.#hash}" class="lightbox-carousel carousel" data-ride="carousel" data-interval="false">
                  <div class="carousel-inner">
                      ${slidesHtml}
                  </div>
