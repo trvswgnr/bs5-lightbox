@@ -6,6 +6,7 @@
  */
 
 import { Modal, Carousel } from 'bootstrap';
+
 class Lightbox {
 	#settings = {
 		target: '[data-toggle="lightbox"]'
