@@ -1,0 +1,26 @@
+{
+    "name": "bs5-lightbox",
+    "version": "1.0.0",
+    "main": "./bs5-lightbox.js",
+    "ignore": [
+        "**/.*",
+        "examples",
+        "node_modules",
+        "bower_components",
+        "test",
+        "tests"
+    ],
+    "homepage": "https://github.com/trvswgnr/bs5-lightbox",
+    "authors": [
+        "Travis Aaron Wagner <travis@travisaw.com>"
+    ],
+    "description": "A vanilla JS lightbox gallery plugin for Bootstrap 5 based on the modal and carousel plugins",
+    "keywords": [
+        "lightbox",
+        "gallery",
+        "bootstrap",
+        "modal",
+        "carousel"
+    ],
+    "license": "MIT"
+}
