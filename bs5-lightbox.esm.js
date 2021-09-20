@@ -124,7 +124,7 @@ class Lightbox {
 		const html = `
 			<div class="modal lightbox fade" id="lightboxModal-${this.#hash}" tabindex="-1" aria-hidden="true">
 				<div class="modal-dialog modal-dialog-centered modal-xl">
-					<div class="modal-content">
+					<div class="modal-content border-0">
 						<div class="modal-body p-0">
 							<button type="button" class="btn-close position-absolute top-0 end-0 p-3" data-bs-dismiss="modal" aria-label="Close" style="z-index: 2;"></button>
 						</div>
