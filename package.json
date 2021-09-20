@@ -1,6 +1,6 @@
 {
   "name": "bs5-lightbox",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": {
     "name": "Travis Aaron Wagner",
     "email": "travis@travisaw.com"
@@ -23,7 +23,10 @@
     "type": "git",
     "url": "git+https://github.com/trvswgnr/bs5-lightbox.git"
   },
-  "dependencies": {
+  "dependencies": {},
+  "peerDependencies": {
     "bootstrap": "^5.1.1"
-  }
+  },
+  "bundleDependencies": false,
+  "deprecated": false
 }
