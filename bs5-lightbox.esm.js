@@ -70,7 +70,7 @@ class Lightbox {
 
 	#isEmbed(src) {
 		const regex = new RegExp(this.#types.join('|'));
-		return regex.test(src);
+		return regex.test(src) || !/\.(png|jpe?g|gif|svg|webp)/.test(src);
 	}
 
 	#createCarousel() {
