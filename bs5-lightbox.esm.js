@@ -29,7 +29,7 @@ class Lightbox {
 				e.preventDefault();
 				this.el = el;
 				this.type = el.dataset.type || 'image';
-				this.src = el.href || el.dataset.src || 'http://via.placeholder.com/1600x900';
+				this.src = el.href || el.dataset.src || el.dataset.remote || 'http://via.placeholder.com/1600x900';
 				this.src = this.type !== 'image' ? 'embed' + this.src : this.src;
 				this.sources = this.#getGalleryItems();
 				this.#createCarousel();
@@ -48,17 +48,30 @@ class Lightbox {
 		} else if (this.el.dataset.gallery) {
 			galleryTarget = this.el.dataset.gallery;
 		}
-		const gallery = galleryTarget ? [...new Set(Array.from(document.querySelectorAll(`[data-gallery="${galleryTarget}"]`), v => `${v.dataset.type ? 'embed' : ''}${v.href || v.dataset.src || 'http://via.placeholder.com/1600x900'}`))] : [this.src];
+		const gallery = galleryTarget ? [...new Set(Array.from(document.querySelectorAll(`[data-gallery="${galleryTarget}"]`), v => `${v.dataset.type ? 'embed' : ''}${v.href || v.dataset.src || v.dataset.remote || 'http://via.placeholder.com/1600x900'}`))] : [this.src];
 		console.log(gallery);
 		return gallery; 
+	}
+
+	#getYoutubeId(string) {
+		if (!string) return false;
+		let matches = string.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/);
+		return (matches && matches[2].length === 11) ? matches[2] : false;
 	}
 
 	#createCarousel() {
 		const template = document.createElement('template');
 		const slidesHtml = this.sources.map((src, i) => {
 			let inner = `<img src="${src}" class="d-block w-100" />`;
-			if (/^embed/.test(src)) {
-				inner = `<div class="ratio ratio-16x9"><iframe src="${src.substring(5)}" allowfullscreen></iframe></div>`;
+			let attributes = '';
+			const youtubeId = this.#getYoutubeId(src);
+			if (/(embed|youtube|vimeo|instagram)/.test(src)) {
+				if (/^embed/.test(src)) src = src.substring(5);
+				if (youtubeId) {
+					src = `https://www.youtube.com/embed/${youtubeId}`;
+					attributes = 'title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"';
+				}
+				inner = `<div class="ratio ratio-16x9"><iframe src="${src}" ${attributes} allowfullscreen></iframe></div>`;
 			}
 			return `<div class="carousel-item ${!i ? 'active' : ''}">${inner}</div>`
 		}).join('');
