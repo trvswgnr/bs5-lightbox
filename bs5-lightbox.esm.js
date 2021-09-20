@@ -12,7 +12,7 @@ class Lightbox {
 		target: '[data-toggle="lightbox"]'
 	}
 
-	#types = ['embed', 'youtube', 'vimeo', 'image', 'instagram']
+	#types = ['embed', 'youtube', 'vimeo', 'instagram']
 
 	#hash = this.#randomHash();
 
@@ -74,7 +74,11 @@ class Lightbox {
 
 	#isEmbed(src) {
 		const regex = new RegExp(this.#types.join('|'));
-		return regex.test(src) || !/\.(png|jpe?g|gif|svg|webp)/.test(src);
+		const isEmbed = regex.test(src);
+		console.log(isEmbed);
+		const isImg = /\.(png|jpe?g|gif|svg|webp)/.test(src);
+		console.log(isImg)
+		return isEmbed || !isImg;
 	}
 
 	#createCarousel() {
