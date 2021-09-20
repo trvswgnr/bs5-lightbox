@@ -11,6 +11,8 @@ class Lightbox {
 		target: '[data-toggle="lightbox"]'
 	}
 
+	#types = ['embed', 'youtube', 'vimeo', 'image', 'instagram']
+
 	#hash = this.#randomHash();
 
 	constructor(options = {}) {
@@ -59,28 +61,42 @@ class Lightbox {
 		return (matches && matches[2].length === 11) ? matches[2] : false;
 	}
 
+	#getInstagramEmbed(src) {
+		if (/instagram/.test(src)) {
+			src += /\/embed$/.test(src) ? '' : '/embed';
+			return `<div class="ratio ratio-1x1" style="max-height: 69vh;"><iframe src="${src}" class="start-50 translate-middle-x" style="max-width: 500px;" frameborder="0" scrolling="no" allowtransparency="true"></iframe></div>`;
+		}
+	}
+
+	#isEmbed(src) {
+		const regex = new RegExp(this.#types.join('|'));
+		return regex.test(src);
+	}
+
 	#createCarousel() {
 		const template = document.createElement('template');
 		const slidesHtml = this.sources.map((src, i) => {
+			src = src.replace(/\/$/, '');
 			let inner = `<img src="${src}" class="d-block w-100" />`;
 			let attributes = '';
+			const instagramEmbed = this.#getInstagramEmbed(src);
 			const youtubeId = this.#getYoutubeId(src);
-			if (/(embed|youtube|vimeo|instagram)/.test(src)) {
+			if (this.#isEmbed(src)) {
 				if (/^embed/.test(src)) src = src.substring(5);
 				if (youtubeId) {
 					src = `https://www.youtube.com/embed/${youtubeId}`;
 					attributes = 'title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"';
 				}
-				inner = `<div class="ratio ratio-16x9"><iframe src="${src}" ${attributes} allowfullscreen></iframe></div>`;
+				inner = instagramEmbed || `<div class="ratio ratio-16x9"><iframe src="${src}" ${attributes} allowfullscreen></iframe></div>`;
 			}
 			return `<div class="carousel-item ${!i ? 'active' : ''}">${inner}</div>`
 		}).join('');
 		const controlsHtml = this.sources.length < 2 ? '' : `
-			<button class="carousel-control carousel-control-prev" type="button" data-bs-target="#lightboxCarousel-${this.#hash}" data-bs-slide="prev">
+			<button class="carousel-control carousel-control-prev h-75 m-auto" type="button" data-bs-target="#lightboxCarousel-${this.#hash}" data-bs-slide="prev">
 				<span class="carousel-control-prev-icon" aria-hidden="true"></span>
 				<span class="visually-hidden">Previous</span>
 			</button>
-			<button class="carousel-control carousel-control-next" type="button" data-bs-target="#lightboxCarousel-${this.#hash}" data-bs-slide="next">
+			<button class="carousel-control carousel-control-next h-75 m-auto" type="button" data-bs-target="#lightboxCarousel-${this.#hash}" data-bs-slide="next">
 				<span class="carousel-control-next-icon" aria-hidden="true"></span>
 				<span class="visually-hidden">Next</span>
 			</button>`;
