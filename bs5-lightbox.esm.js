@@ -39,7 +39,7 @@ class Lightbox {
 	#createCarousel() {
 		const template = document.createElement('template');
 		const slidesHtml = this.sources.map((src, i) => `<div class="carousel-item ${i === this.sources.indexOf(this.src) ? 'active' : ''}"><img src="${src}" class="d-block w-100"></div>`).join('');
-		const controlsHtml = this.sources.length < 1 ? '' : `
+		const controlsHtml = this.sources.length < 2 ? '' : `
 			<button class="carousel-control carousel-control-prev" type="button" data-bs-target="#lightboxCarousel-${this.#hash}" data-bs-slide="prev">
 				<span class="carousel-control-prev-icon" aria-hidden="true"></span>
 				<span class="visually-hidden">Previous</span>
