@@ -5,8 +5,7 @@
  * @module bs5-lightbox
  */
 
-import { Modal } from 'bootstrap';
-
+import { Modal, Carousel } from 'bootstrap';
 class Lightbox {
 	#settings = {
 		target: '[data-toggle="lightbox"]'
@@ -17,7 +16,7 @@ class Lightbox {
 	constructor(options = {}) {
 		if (typeof options === 'string') {
 			this.#settings.target = options;
-			options = {};
+			options = typeof arguments[1] !== 'undefined' ? arguments[1] : {};
 		}
 
 		this.#settings = {
@@ -28,17 +27,41 @@ class Lightbox {
 		document.querySelectorAll(this.#settings.target).forEach(el => {
 			el.addEventListener('click', e => {
 				e.preventDefault();
-				this.src = el.href || el.dataset.remote || 'http://via.placeholder.com/1600x900';
-				this.sources = el.dataset.gallery ? [...new Set(Array.from(document.querySelectorAll(`[data-gallery="${el.dataset.gallery}"]`), v => v.href || v.dataset.remote || 'http://via.placeholder.com/1600x900'))] : [this.src];
+				this.el = el;
+				this.type = el.dataset.type || 'image';
+				this.src = el.href || el.dataset.src || 'http://via.placeholder.com/1600x900';
+				this.src = this.type !== 'image' ? 'embed' + this.src : this.src;
+				this.sources = this.#getGalleryItems();
 				this.#createCarousel();
 				this.#createModal();
 			});
 		});
 	}
 
+	#getGalleryItems() {
+		let galleryTarget = '';
+		if (this.#settings.gallery) {
+			if (Array.isArray(this.#settings.gallery)) {
+				return this.#settings.gallery;
+			}
+			galleryTarget = this.#settings.gallery;
+		} else if (this.el.dataset.gallery) {
+			galleryTarget = this.el.dataset.gallery;
+		}
+		const gallery = galleryTarget ? [...new Set(Array.from(document.querySelectorAll(`[data-gallery="${galleryTarget}"]`), v => `${v.dataset.type ? 'embed' : ''}${v.href || v.dataset.src || 'http://via.placeholder.com/1600x900'}`))] : [this.src];
+		console.log(gallery);
+		return gallery; 
+	}
+
 	#createCarousel() {
 		const template = document.createElement('template');
-		const slidesHtml = this.sources.map((src, i) => `<div class="carousel-item ${i === this.sources.indexOf(this.src) ? 'active' : ''}"><img src="${src}" class="d-block w-100"></div>`).join('');
+		const slidesHtml = this.sources.map((src, i) => {
+			let inner = `<img src="${src}" class="d-block w-100" />`;
+			if (/^embed/.test(src)) {
+				inner = `<div class="ratio ratio-16x9"><iframe src="${src.substring(5)}" allowfullscreen></iframe></div>`;
+			}
+			return `<div class="carousel-item ${!i ? 'active' : ''}">${inner}</div>`
+		}).join('');
 		const controlsHtml = this.sources.length < 2 ? '' : `
 			<button class="carousel-control carousel-control-prev" type="button" data-bs-target="#lightboxCarousel-${this.#hash}" data-bs-slide="prev">
 				<span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -50,7 +73,7 @@ class Lightbox {
 			</button>`;
 
 		const html = `
-			<div id="lightboxCarousel-${this.#hash}" class="lightbox-carousel carousel" data-ride="carousel" data-interval="false">
+			<div id="lightboxCarousel-${this.#hash}" class="lightbox-carousel carousel" data-interval="false">
 				<div class="carousel-inner">
 					${slidesHtml}
 				</div>
@@ -59,6 +82,11 @@ class Lightbox {
 
 		template.innerHTML = html.trim();
 		this.carouselEl = template.content.firstChild;
+		this.carousel = new Carousel(this.carouselEl, {
+			ride: false,
+			interval: false
+		});
+		this.carousel.to(this.sources.includes(this.src) ? this.sources.indexOf(this.src) : 0);
 	}
 
 	#createModal() {
