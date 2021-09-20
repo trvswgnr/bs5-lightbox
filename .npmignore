@@ -1,0 +1,7 @@
+bower_components/
+test/
+package-lock.json
+*.map
+*.dev.js
+webpack.config.js
+.editorconfig
