@@ -32,13 +32,17 @@ class Lightbox {
 				e.preventDefault();
 				this.el = el;
 				this.type = el.dataset.type || 'image';
-				this.src = el.href || el.dataset.src || el.dataset.remote || 'http://via.placeholder.com/1600x900';
+				this.src = this.#getSrc(el);
 				this.src = this.type !== 'image' ? 'embed' + this.src : this.src;
 				this.sources = this.#getGalleryItems();
 				this.#createCarousel();
 				this.#createModal();
 			});
 		});
+	}
+
+	#getSrc(el) {
+		return el.dataset.src || el.dataset.remote || el.href || 'http://via.placeholder.com/1600x900';
 	}
 
 	#getGalleryItems() {
@@ -51,7 +55,7 @@ class Lightbox {
 		} else if (this.el.dataset.gallery) {
 			galleryTarget = this.el.dataset.gallery;
 		}
-		const gallery = galleryTarget ? [...new Set(Array.from(document.querySelectorAll(`[data-gallery="${galleryTarget}"]`), v => `${v.dataset.type ? 'embed' : ''}${v.href || v.dataset.src || v.dataset.remote || 'http://via.placeholder.com/1600x900'}`))] : [this.src];
+		const gallery = galleryTarget ? [...new Set(Array.from(document.querySelectorAll(`[data-gallery="${galleryTarget}"]`), v => `${v.dataset.type ? 'embed' : ''}${this.#getSrc(v)}`))] : [this.src];
 		console.log(gallery);
 		return gallery; 
 	}
