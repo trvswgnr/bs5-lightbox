@@ -7,7 +7,7 @@ See the github page for docs: http://trvswgnr.github.io/bs5-lightbox
 
 Contributing
 ----
-Instead of modifying the /dist/*.js JavaScript files directly, you should instead modify the bs5-lightbox.js file and run the webpack task.
+Modify the bs5-lightbox.esm.js file instead of the bs5-lightbox.js file.
 
 Copyright and license
 ----
