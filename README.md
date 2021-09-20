@@ -1,7 +1,7 @@
 Lightbox for Bootstrap 5
 ========
 
-A lightbox module written in vanilla JavaScript for Bootstrap that supports images, YouTube videos, and galleries - built around Bootstrap's Modal and Carousel plugins.
+A lightbox module written in vanilla JavaScript for Bootstrap that supports images and galleries–built around Bootstrap's Modal and Carousel plugins.
 
 Contributing
 ----
