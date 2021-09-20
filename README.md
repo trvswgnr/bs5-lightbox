@@ -3,6 +3,8 @@ A lightbox module written in pure ES6 JavaScript for Bootstrap that supports ima
 
 Have you been using [Lightbox for Bootstrap (ekko-lightbox)](https://github.com/ashleydw/lightbox) but recently moved to Bootstrap 5? This is your replacement.
 
+Documentation: https://trvswgnr.github.io/bs5-lightbox/
+
 ## Installation
 ##### Install with NPM:
 ```shell
