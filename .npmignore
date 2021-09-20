@@ -5,3 +5,4 @@ package-lock.json
 *.dev.js
 webpack.config.js
 .editorconfig
+docs/
