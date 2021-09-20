@@ -1,6 +1,6 @@
 {
   "name": "bs5-lightbox",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "author": {
     "name": "Travis Aaron Wagner",
     "email": "travis@travisaw.com"
@@ -19,6 +19,7 @@
   ],
   "license": "MIT",
   "main": "bs5-lightbox.js",
+  "module": "bs5-lightbox.esm.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/trvswgnr/bs5-lightbox.git"
@@ -27,6 +28,30 @@
   "peerDependencies": {
     "bootstrap": "^5.1.1"
   },
+  "scripts": {
+    "build": "webpack --mode=production",
+    "dev": "webpack --mode=development",
+    "start": "webpack --mode=development --watch"
+  },
   "bundleDependencies": false,
-  "deprecated": false
+  "deprecated": false,
+  "funding": "https://github.com/sponsors/trvswgnr",
+  "devDependencies": {
+    "@babel/core": "^7.15.5",
+    "@babel/preset-env": "^7.15.6",
+    "babel-loader": "^8.2.2",
+    "webpack": "^5.53.0",
+    "webpack-cli": "^4.8.0"
+  },
+  "browserslist": [
+    ">= 0.5%",
+    "last 2 major versions",
+    "not dead",
+    "Chrome >= 60",
+    "Firefox >= 60",
+    "Firefox ESR",
+    "iOS >= 12",
+    "Safari >= 12",
+    "not Explorer <= 11"
+  ]
 }
