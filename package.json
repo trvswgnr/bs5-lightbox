@@ -1,6 +1,6 @@
 {
   "name": "bs5-lightbox",
-  "version": "1.2.7",
+  "version": "1.2.8",
   "author": {
     "name": "Travis Aaron Wagner",
     "email": "travis@travisaw.com"
@@ -18,8 +18,7 @@
     "carousel"
   ],
   "license": "MIT",
-  "main": "bs5-lightbox.js",
-  "module": "bs5-lightbox.esm.js",
+  "main": "bs5-lightbox",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/trvswgnr/bs5-lightbox.git"

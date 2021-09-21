@@ -5,5 +5,5 @@
  */
 
 import Lightbox from "./bs5-lightbox.esm";
-new Lightbox();
+const lightbox = new Lightbox();
 export default Lightbox;
