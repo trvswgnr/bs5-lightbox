@@ -1,5 +1,5 @@
 # Lightbox for Bootstrap 5
-A lightbox module written in pure ES6 JavaScript for Bootstrap that supports images, galleries, YouTube, Vimeo, and Instagram—built around Bootstrap's Modal and Carousel plugins.
+A Bootstrap 5 lightbox written in pure ES6 JavaScript that supports images, galleries, YouTube, Vimeo, and Instagram—built around Bootstrap's Modal and Carousel plugins.
 
 Have you been using [Lightbox for Bootstrap (ekko-lightbox)](https://github.com/ashleydw/lightbox) but recently moved to Bootstrap 5? This is your replacement.
 
@@ -24,7 +24,7 @@ import Lightbox from 'bs5-lightbox'
 const lightbox = new Lightbox('.my-lightbox-toggle')
 ```
 
-If you only want the `Lightbox` class without automatically initialization, import the module instead:
+If you only want the `Lightbox` class without automatic initialization, import the module instead:
 ```js
 import Lightbox from 'bs5-lightbox.esm'
 
