@@ -12,7 +12,8 @@
 	<!-- for documentation only -->
 	<style type="text/css">
 	:root {
-		--primary: #35004f;
+		--primary: #6402d4;
+		--gradient: linear-gradient(to top left, #6402d4, #a000ff);
 	}
 		div.row > div > div.row {
 			margin-bottom: 15px;
@@ -35,15 +36,15 @@
 
 		div.top-container {
 			padding-top:100px;
-			background-color: var(--primary);
+			background: var(--gradient);
 			color:#ccc;
 		}
 		div.top-container h1 {
 			color:white;
 		}
 		div.top-container a {
-			color:#ccc;
-			border-bottom:1px dotted white;
+			color: white;
+			font-weight: 600;
 		}
 		div.top-container a:hover {
 			color: white;
@@ -56,12 +57,11 @@
 		}
 
 		h2 {
-			background-color:var(--primary);
-			color:white;
-			display:inline-block;
-			padding:6px;
-			margin-top:50px;
+			color :var(--primary);
+			margin-top: 50px;
 			margin-bottom: 20px;
+			border-bottom: 2px solid;
+			font-weight: 700;
 		}
 
 		h3 {
@@ -120,6 +120,23 @@
 			padding-top: 50px;
 		}
 
+	
+
+		#main-nav .list-group-item a {
+			color: #4a4a4a
+		}
+
+		#main-nav .dropdown-toggle {
+			transform: rotate(-90deg);
+			position: absolute;
+			left: 7px;
+			transition: transform 0.2s;
+		}
+
+		#main-nav [aria-expanded="true"] .dropdown-toggle {
+			transform: rotate(0deg);
+		}
+
 		#main-nav a {
 			display: block;
 		}
@@ -172,16 +189,151 @@
 			content: " */";
 		}
 
+		#navbar {
+			position: -webkit-sticky;
+			position: sticky;
+			top: 0;
+			z-index: 1020;
+		}
+
+		.link-anchor {
+			margin-top: -10px;
+			height: 1px;
+		}
+
 		@media screen and (max-width: 768px) {
+			body {
+				margin-top: 57px;
+			}
+
+			#navbar {
+				position: fixed;
+				right: 0;
+				left: 0;
+				z-index: 1030;
+			}
+
 			#main-nav .list-group-item a {
 				padding: 0.5rem 0;
 			}
+
+			#navbar .dropdown-item {
+				padding-top: 0.5rem;
+				padding-bottom: 0.5rem;
+			}
+
+			.img-fluid {
+				width: 100%;
+			}
+
+			[class*="col-"] {
+				margin-bottom: 1rem;
+			}
+
+			.link-anchor {
+				height: 20px;
+				margin-top: -20px;
+			}
+		}
+
+		.navbar-nav.ms-auto .dropdown-menu[data-bs-popper] {
+			left: initial;
+			right: 0;
+		}
+
+		#main-nav .list-group-item {
+			padding: 0;
+		}
+
+		#main-nav .list-group-item a:hover {
+			background-color: rgba(0,0,0,0.05);
+		}
+
+		#main-nav .list-group-item a {
+			padding: .5rem 1rem;
+			padding-left: 21px;
+		}
+
+		#main-nav .list-group-item .list-group-item a::before {
+			content: "\2014";
+			display: inline-block;
+			margin-right: 5px;
+			opacity: 0.3;
+		}
+
+		#main-nav .list-group-item .list-group-item {
+			font-size: 0.9em;
+		}
+
+		#main-nav .list-group-item.active {
+			background-color: var(--primary);
+			border-color: var(--primary);
+		}
+
+		#main-nav .list-group-item.active a {
+			color: #fff;
+		}
+
+		#main-nav .list-group-item.active a::before {
+			opacity: 1;
+		}
+
+		.logo {
+			height: 30px;
+			width: 30px;
+			background: var(--gradient);
+			text-align: center;
+			border-radius: 4px;
+			color: #fff;
+			font-weight: 500;
+			font-family: "Helvetica Neue", sans-serif;
+			line-height: 29px;
+		}
+
+		.top-header .lead {
+			opacity: 0.8;
+			color: #fff;
 		}
 	</style>
 </head>
 
 <body>
 
+	<div>
+		<nav id="navbar" class="navbar navbar-light navbar-expand bg-light border-bottom shadow-sm">
+			<div class="container-fluid">
+				<a class="navbar-brand" href="#"><strong class="d-none d-sm-inline-block" style="margin-left: 2px;">ightbox<span class="d-none d-md-inline"> for Bootstrap 5</span></span></strong><div class="logo d-inline-block float-start">L</div></a>
+				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarSupportedContent">
+					<ul class="navbar-nav ms-auto">
+						<li class="nav-item">
+							<a class="nav-link" href="#installation">Installation</a>
+						</li>
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+								Examples
+							</a>
+							<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+								<li class=""><a href="#single-image" class="dropdown-item">Single Image</a></li>
+								<li class=""><a href="#image-gallery" class="dropdown-item">Image Gallery</a></li>
+								<li class=""><a href="#videos" class="dropdown-item">Videos</a></li>
+								<li class=""><a href="#videos-gallery" class="dropdown-item">Gallery of Videos</a></li>
+								<li class=""><a href="#mixed-gallery" class="dropdown-item">Mixed gallery</a></li>
+								<li class=""><a href="#data-remote" class="dropdown-item">Via <code>data-remote</code></a></li>
+								<li class=""><a href="#force-type" class="dropdown-item">Force type</a></li>
+								<li class=""><a href="#hidden-elements" class="dropdown-item">Hidden elements</a></li>
+								<li class=""><a href="#remote-content" class="dropdown-item">Remote content</a></li>
+							</ul>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#contributing">Contributing</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+			</nav>
     <div class="top-container">
 
         <div class="container">
@@ -190,7 +342,7 @@
 
                     <div class="top-header text-center text-md-start">
 						<h1>Lightbox for Bootstrap 5</h1>
-						<p class="lead">Utilizes Bootstrap's Modal & Carousel plugins to implement a lightbox gallery - <a href="https://github.com/trvswgnr/bs5-lightbox">GitHub</a></p>
+						<p class="lead mb-3">Utilizes Bootstrap's Modal & Carousel plugins to implement a lightbox gallery - <a href="https://github.com/trvswgnr/bs5-lightbox">GitHub</a></p>
 						<div class="pb-3">
 							<iframe src="https://ghbtns.com/github-btn.html?user=trvswgnr&repo=bs5-lightbox&type=watch&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="100	" height="20"></iframe>
 							<iframe src="https://ghbtns.com/github-btn.html?user=trvswgnr&repo=bs5-lightbox&type=fork&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="100" height="20"></iframe>
@@ -202,20 +354,21 @@
             </div>
         </div>
     </div>
+</div>
 
 <div class="container-lg" id="main">
 	<div class="row justify-content-center">
 		<div class="col-md-3">
-			<ul class="list-group sticky-top" id="main-nav">
+			<ul class="list-group sticky-top d-none d-md-flex" id="main-nav">
 				<li class="list-group-item"><a href="#installation">Installation</a></li>
-				<li class="list-group-item"><a href="#examples-nav" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="examples-nav">Examples<span class="dropdown-toggle float-end"></span></a></li>
-				<ul class="list-group-item list-group list-group-flush collapse" id="examples-nav">
+				<li class="list-group-item"><a href="#examples-nav" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="examples-nav"><span class="dropdown-toggle"></span>Examples</span></a></li>
+				<ul class="list-group-item list-group list-group-flush p-0 collapse" id="examples-nav">
 					<li class="list-group-item"><a href="#single-image">Single Image</a></li>
 					<li class="list-group-item"><a href="#image-gallery">Image Gallery</a></li>
 					<li class="list-group-item"><a href="#videos">Videos</a></li>
 					<li class="list-group-item"><a href="#videos-gallery">Gallery of Videos</a></li>
 					<li class="list-group-item"><a href="#mixed-gallery">Mixed gallery</a></li>
-					<li class="list-group-item"><a href="#data-remote">Via <code>data-remote</code></a></li>
+					<li class="list-group-item"><a href="#data-remote">Via data-remote</a></li>
 					<li class="list-group-item"><a href="#force-type">Force type</a></li>
 					<li class="list-group-item"><a href="#hidden-elements">Hidden elements</a></li>
 					<li class="list-group-item"><a href="#remote-content">Remote content</a></li>
@@ -224,7 +377,8 @@
 			</ul>
 		</div>
 		<div class="col-md-9">
-<h2 id="installation">Installation</h1>
+<div id="installation" class="link-anchor mt-0"></div>
+<h2>Installation</h1>
 <div class="markdown">
 Using NPM:
 ```shell
@@ -271,10 +425,12 @@ const lightbox = new Lightbox('.my-lightbox-toggle')
 Obviously, you need Bootstrap (made for Bootstrap v5).
 </div>
 
-<h2 id="examples">Examples</h2>
+<div id="examples" class="link-anchor"></div>
+<h2>Examples</h2>
 <p><em>Thanks to <a href="https://unsplash.it/">https://unsplash.it/</a> for the images.</em></p>
 
-<h3 id="single-image">Single Image</h3>
+<div id="single-image" class="link-anchor"></div>
+<h3>Single Image</h3>
 <!-- <p>Note: uses modal plugin title option via <code>data-title</code>, and the custom footer tag using <code>data-footer</code></p> -->
 <div class="row justify-content-center">
 	<div class="col-sm-3" data-code="example-1">
@@ -285,7 +441,8 @@ Obviously, you need Bootstrap (made for Bootstrap v5).
 </div>
 <div class="markdown" id="example-1"></div>
 
-<h3 id="image-gallery">Image Gallery</h3>
+<div id="image-gallery" class="link-anchor"></div>
+<h3>Image Gallery</h3>
 <p>Galleries are created by adding the <code>data-gallery</code> attribute.</p>
 <div class="row justify-content-center">
 	<div class="col-md-8" data-code="example-2">
@@ -315,7 +472,8 @@ Obviously, you need Bootstrap (made for Bootstrap v5).
 </div>
 <div class="markdown" id="example-2"></div>
 
-<h3 id="videos">Videos</h3>
+<div id="videos" class="link-anchor"></div>
+<h3>Videos</h3>
 <h4>YouTube</h4>
 <p>You can use various YouTube URL formats, the regex used is: <code>/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&amp;v=)([^#\&amp;\?]*).*/</code></p>
 <div data-code="example-3a">
@@ -342,7 +500,8 @@ Obviously, you need Bootstrap (made for Bootstrap v5).
 </div>
 <div class="markdown" id="example-3c"></div>
 
-<h3 id="videos-gallery">Gallery of Videos</h3>
+<div id="videos-gallery" class="link-anchor"></div>
+<h3>Gallery of Videos</h3>
 <div class="row justify-content-center">
 	<div class="col-md-10" data-code="example-4">
 		<div class="row">
@@ -360,7 +519,8 @@ Obviously, you need Bootstrap (made for Bootstrap v5).
 </div>
 <div class="markdown" id="example-4"></div>
 
-<h3 id="mixed-gallery">Mixed gallery</h3>
+<div id="mixed-gallery" class="link-anchor"></div>
+<h3>Mixed gallery</h3>
 <div class="row justify-content-center">
 	<div class="col-md-10">
 		<div class="row flex-items-xs-center" data-code="example-5">
@@ -378,7 +538,8 @@ Obviously, you need Bootstrap (made for Bootstrap v5).
 </div>
 <div class="markdown" id="example-5"></div>
 
-<h3 id="data-remote">Via <code>data-remote</code> or <code>data-src</code></h3>
+<div id="data-remote" class="link-anchor"></div>
+<h3>Via <code>data-remote</code> or <code>data-src</code></h3>
 <p>Neither of these are <code>&lt;a&gt;</code> tags, so both rely on the <code>data-remote</code> or <code>data-src</code>attributes.</p>
 <div class="row justify-content-center">
 	<div class="col-md-10" data-code="example-7">
@@ -394,7 +555,8 @@ Obviously, you need Bootstrap (made for Bootstrap v5).
 </div>
 <div class="markdown" id="example-7"></div>
 				
-<h3 id="force-type">Force type</h3>
+<div id="force-type" class="link-anchor"></div>
+<h3>Force type</h3>
 <p>If the images you are linking to have no extension, the lightbox cannot detect that is an image;
 	therefore you need to tell the lightbox what <code>data-type</code> it is.</p>
 <p>Current allowed types are: <code>['image', 'youtube', 'vimeo', 'instagram', 'video', 'url']</code>
@@ -405,7 +567,8 @@ Obviously, you need Bootstrap (made for Bootstrap v5).
 </div>
 <div class="markdown" id="example-8"></div>
 
-<h3 id="hidden-elements">Hidden elements</h3>
+<div id="hidden-elements" class="link-anchor"></div>
+<h3>Hidden elements</h3>
 <p>Only show a few images but have a large gallery</p>
 <div class="row justify-content-center">
 	<div class="col-md-10" data-code="example-9">
@@ -430,19 +593,21 @@ Obviously, you need Bootstrap (made for Bootstrap v5).
 </div>
 <div class="markdown" id="example-9"></div>	
 
-<h3 id="remote-content">Remote content</h3>
+<div id="remote-content" class="link-anchor"></div>
+<h3>Remote content</h3>
 <p>Given a URL that is not an image or video (including unforced types), load the content using an iFrame.</p>
 <p data-code="example-10">
 	<a href="https://getbootstrap.com" data-title="Bootstrap" data-toggle="lightbox">Bootstrap Docs</a>
 </p>
 <div class="markdown" id="example-10"></div>
 
-<h2 id="contributing">Contributing</h2>
+<div id="contributing" class="link-anchor"></div>
+<h2>Contributing</h2>
 <p>Modify the bs5-lightbox.esm.js file and create a pull request.</p>
 <p>You can help make this project even better and keep it up to date by making a small contribution! <a href="https://github.com/sponsors/trvswgnr">Fund this project</a>.</p>
 
 
-                <p class="footer"><span>Built by me, <a href="https://travisaw.com">Travis Aaron Wagner</a></span></p>
+                <p class="footer" style="min-height: 90vh;"><span>Built by me, <a href="https://travisaw.com">Travis Aaron Wagner</a></span></p>
             </div>
         </div>
     </div>
@@ -476,6 +641,17 @@ Obviously, you need Bootstrap (made for Bootstrap v5).
 				el.innerHTML = md.render(el.innerHTML);
 			});
 			hljs.highlightAll();
+
+			var mainNavItems = document.querySelectorAll('#main-nav .list-group-item');
+			var mainNavItemsAnchor = document.querySelectorAll('#main-nav .list-group-item a');
+			mainNavItemsAnchor.forEach(function(el) {
+				el.addEventListener('click', function(e) {
+					mainNavItems.forEach(function(v) {
+						v.classList.remove('active');
+					});
+					el.closest('li').classList.add('active');
+				});
+			});
 	</script>
 </body>
 </html>
