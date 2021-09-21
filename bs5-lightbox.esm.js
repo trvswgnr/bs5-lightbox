@@ -83,8 +83,9 @@ class Lightbox {
 		const template = document.createElement('template');
 		const slidesHtml = this.sources.map((src, i) => {
 			src = src.replace(/\/$/, '');
-			let destroyLoader = /\.png/.test(src) ? `onload="this.add.previousSibling.remove()"` : '';
-			let inner = `<img src="${src}" class="d-block w-100 position-relative" style="z-index: 1;" ${destroyLoader} />`;
+			let onload = 'this.style.opacity = 1;';
+			onload += /\.png/.test(src) ? `this.add.previousSibling.remove();` : '';
+			let inner = `<img src="${src}" class="d-block w-100 position-relative" style="z-index: 1; opacity: 0;" onload="${onload}" />`;
 			let attributes = '';
 			const instagramEmbed = this.#getInstagramEmbed(src);
 			const youtubeId = this.#getYoutubeId(src);
@@ -97,7 +98,7 @@ class Lightbox {
 				inner = instagramEmbed || `<div class="ratio ratio-16x9"><iframe src="${src}" ${attributes} allowfullscreen></iframe></div>`;
 			}
 			const spinner = `<div class="position-absolute top-50 start-50 translate-middle text-white"><div class="spinner-border" style="width: 3rem; height: 3rem;" role="status"></div></div>`;
-			return `<div class="carousel-item ${!i ? 'active' : ''}">${spinner}${inner}</div>`
+			return `<div class="carousel-item ${!i ? 'active' : ''}" style="min-height: 100px;">${spinner}${inner}</div>`
 		}).join('');
 		const controlsHtml = this.sources.length < 2 ? '' : `
 			<button class="carousel-control carousel-control-prev h-75 m-auto" type="button" data-bs-target="#lightboxCarousel-${this.#hash}" data-bs-slide="prev">
