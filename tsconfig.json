@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./dist/",
+    "outDir": "./dist/",
+    "declaration": true,
+    "declarationMap": true,
+    "rootDir": "./src/",
+    "noImplicitAny": true,
+    "module": "es6",
+    "target": "es6",
+    "jsx": "react",
+    "allowJs": true,
+    "downlevelIteration": true,
+    "allowSyntheticDefaultImports": true
+  },
+  "include": [
+      "src/**/*.ts",
+      "src/**/*.esm.ts",
+  ],
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts"
+  ],
+  "skipLibCheck": true
+}

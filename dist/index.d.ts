@@ -3,7 +3,6 @@
  *
  * @file Creates a new Lightbox instance.
  */
-
-import Lightbox from "./bs5-lightbox.esm";
-const lightbox = new Lightbox();
+import Lightbox from "./index.esm";
 export default Lightbox;
+//# sourceMappingURL=index.d.ts.map
