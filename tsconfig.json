@@ -12,7 +12,6 @@
   },
   "include": [
     "src/**/*.ts",
-    "src/**/*.esm.ts"
   ],
   "exclude": ["node_modules", "**/__tests__/*"],
   "skipLibCheck": true

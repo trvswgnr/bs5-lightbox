@@ -20,6 +20,6 @@ module.exports = {
 	],
 	output: {
 		path: path.resolve(__dirname, './dist'),
-		filename: 'index.min.js'
+		filename: 'index.bundle.min.js'
 	}
 };

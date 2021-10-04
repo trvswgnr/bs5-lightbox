@@ -18,7 +18,7 @@
     "carousel"
   ],
   "license": "MIT",
-  "main": "dist/index.esm.js",
+  "main": "dist/index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/trvswgnr/bs5-lightbox.git"
@@ -54,5 +54,6 @@
     "iOS >= 12",
     "Safari >= 12",
     "not Explorer <= 11"
-  ]
+  ],
+  "files": ["dist/**/*"]
 }
