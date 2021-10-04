@@ -21,7 +21,11 @@ If you want to target a different element, import the `Lightbox` class and insta
 ```js
 import Lightbox from 'bs5-lightbox'
 
-const lightbox = new Lightbox('.my-lightbox-toggle')
+document.querySelectorAll('.my-lightbox-toggle').forEach((el) => el.addEventListener('click', (e) => {
+	e.preventDefault();
+	const lightbox = new Lightbox(el);
+	lightbox.show();
+}));
 ```
 
 ## Contributing
