@@ -8,7 +8,7 @@
   "bugs": {
     "url": "https://github.com/trvswgnr/bs5-lightbox/issues"
   },
-  "description": "A vanilla JS lightbox gallery plugin for Bootstrap 5 based on the modal and carousel plugins",
+  "description": "A pure JS lightbox gallery plugin for Bootstrap 5 based on the modal and carousel plugins",
   "homepage": "https://github.com/trvswgnr/bs5-lightbox",
   "keywords": [
     "lightbox",
