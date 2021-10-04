@@ -18,47 +18,71 @@
     "carousel"
   ],
   "license": "MIT",
-  "main": "./dist/index",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/trvswgnr/bs5-lightbox.git"
-  },
-  "dependencies": {
-    "@babel/preset-typescript": "^7.15.0"
-  },
-  "peerDependencies": {
-    "bootstrap": "^5.1.1"
-  },
+  "main": "dist/index.esm.js",
+  "types": "dist/index.esm.d.ts",
   "scripts": {
-    "build": "webpack --mode=production",
-    "dev": "webpack --mode=development",
-    "start": "webpack --mode=development --watch",
-    "ts": "tsc src/*.ts"
-  },
-  "bundleDependencies": false,
-  "deprecated": false,
-  "funding": "https://github.com/sponsors/trvswgnr",
-  "devDependencies": {
-    "@babel/core": "^7.15.5",
-    "@babel/preset-env": "^7.15.6",
-    "babel-loader": "^8.2.2",
-    "imports-loader": "^3.0.0",
-    "terser-webpack-plugin": "^5.2.4",
-    "ts-loader": "^9.2.6",
-    "typescript": "^4.4.3",
-    "webpack": "^5.53.0",
-    "webpack-cli": "^4.8.0",
-    "webpack-node-externals": "^3.0.0"
+    "bundle": "webpack --mode=production",
+    "clean": "fse emptyDir --quiet dist/",
+    "babel": "babel dist/index.esm.js -o dist/index.babel.js",
+    "minify": "uglifyjs --compress --mangle --output dist/index.min.js -- dist/index.babel.js",
+    "build": "run-s compile babel minify bundle",
+    "compile": "tsc",
+    "test": "jest --config jest.config.ts",
+    "build+test": "run-s build test",
+    "format": "prettier --write \"src/**/*.(js|ts)\"",
+    "lint": "eslint src --ext .js,.ts",
+    "lint:fix": "eslint src --fix --ext .js,.ts",
+    "publish": "npm publish",
+    "serve": "browser-sync start --server --files \"dist/*.css, dist/*.js, **/*.html, !node_modules/**/*.html\" --open false",
+    "watch:ts": "npm run-s build; onchange \"src/*.ts\" -- run-s build -s",
+    "watch": "run-p serve watch:*",
+    "start": "run-s clean watch"
   },
   "browserslist": [
-    ">= 0.5%",
-    "last 2 major versions",
+    "last 1 version",
     "not dead",
-    "Chrome >= 60",
-    "Firefox >= 60",
-    "Firefox ESR",
-    "iOS >= 12",
-    "Safari >= 12",
-    "not Explorer <= 11"
-  ]
+    "ie >= 11"
+  ],
+  "devDependencies": {
+    "@atao60/fse-cli": "^0.1.7",
+    "@babel/cli": "^7.15.7",
+    "@babel/core": "^7.15.5",
+    "@babel/plugin-transform-object-assign": "^7.14.5",
+    "@babel/plugin-transform-runtime": "^7.15.0",
+    "@babel/preset-env": "^7.15.6",
+    "@types/isomorphic-fetch": "0.0.35",
+    "@types/jest": "^27.0.2",
+    "@types/regenerator-runtime": "^0.13.1",
+    "@typescript-eslint/eslint-plugin": "^4.31.2",
+    "@typescript-eslint/parser": "^4.31.2",
+    "autoprefixer": "^10.3.5",
+    "browser-sync": "^2.27.5",
+    "eslint": "^7.32.0",
+    "eslint-config-standard": "^16.0.3",
+    "eslint-plugin-import": "^2.24.2",
+    "eslint-plugin-jest": "^24.4.2",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^5.1.0",
+    "eslint-plugin-standard": "^5.0.0",
+    "isomorphic-fetch": "^3.0.0",
+    "jest": "^27.2.1",
+    "node-sass": "^6.0.1",
+    "npm-run-all": "^4.1.5",
+    "onchange": "^7.1.0",
+    "postcss": "^8.3.7",
+    "postcss-cli": "^8.3.1",
+    "prettier": "^2.4.1",
+    "stylelint": "^13.13.1",
+    "ts-jest": "^27.0.5",
+    "typescript": "^4.4.3",
+    "uglify-js": "^3.14.2",
+    "webpack": "^5.56.0",
+    "webpack-cli": "^4.8.0"
+  },
+  "files": [
+    "dist/**/*"
+  ],
+  "dependencies": {
+    "regenerator-runtime": "^0.13.9"
+  }
 }

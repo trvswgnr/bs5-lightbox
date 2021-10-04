@@ -197,4 +197,10 @@ namespace Lightbox {
 	}
 }
 
+document.querySelectorAll(Lightbox.defaultSelector).forEach((el: HTMLElement) => el.addEventListener('click', (e) => {
+    e.preventDefault();
+    const lightbox = new Lightbox(el);
+    lightbox.show();
+}));
+
 export default Lightbox

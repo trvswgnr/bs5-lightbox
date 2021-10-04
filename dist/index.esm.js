@@ -11,20 +11,18 @@ const bootstrap = {
     Carousel
 };
 class Lightbox {
-    static allowedEmbedTypes = ['embed', 'youtube', 'vimeo', 'instagram', 'url'];
-    static allowedMediaTypes = [...Lightbox.allowedEmbedTypes, 'image'];
-    static defaultSelector = '[data-toggle="lightbox"]';
     constructor(el, options = {}) {
+        this.hash = this.randomHash();
+        this.settings = Object.assign(Object.assign(Object.assign({}, bootstrap.Modal.Default), bootstrap.Carousel.Default), { interval: false, target: '[data-toggle="lightbox"]', gallery: '' });
+        this.modalOptions = (() => this.setOptionsFromSettings(bootstrap.Modal.Default))();
+        this.carouselOptions = (() => this.setOptionsFromSettings(bootstrap.Carousel.Default))();
         console.log();
         if (typeof el === 'string') {
             this.settings.target = el;
             el = document.querySelector(this.settings.target);
             options = typeof arguments[1] !== 'undefined' ? arguments[1] : {};
         }
-        this.settings = {
-            ...this.settings,
-            ...options
-        };
+        this.settings = Object.assign(Object.assign({}, this.settings), options);
         this.el = el;
         this.type = el.dataset.type || 'image';
         this.src = this.getSrc(el);
@@ -33,24 +31,6 @@ class Lightbox {
         this.createCarousel();
         this.createModal();
     }
-    hash = this.randomHash();
-    settings = {
-        ...bootstrap.Modal.Default,
-        ...bootstrap.Carousel.Default,
-        interval: false,
-        target: '[data-toggle="lightbox"]',
-        gallery: ''
-    };
-    modalOptions = (() => this.setOptionsFromSettings(bootstrap.Modal.Default))();
-    carouselOptions = (() => this.setOptionsFromSettings(bootstrap.Carousel.Default))();
-    carouselElement;
-    modalElement;
-    modal;
-    carousel;
-    sources;
-    src;
-    type;
-    el;
     show() {
         document.body.appendChild(this.modalElement);
         this.modal.show();
@@ -165,4 +145,12 @@ class Lightbox {
         return Array.from({ length }, () => Math.floor(Math.random() * 36).toString(36)).join('');
     }
 }
+Lightbox.allowedEmbedTypes = ['embed', 'youtube', 'vimeo', 'instagram', 'url'];
+Lightbox.allowedMediaTypes = [...Lightbox.allowedEmbedTypes, 'image'];
+Lightbox.defaultSelector = '[data-toggle="lightbox"]';
+document.querySelectorAll(Lightbox.defaultSelector).forEach((el) => el.addEventListener('click', (e) => {
+    e.preventDefault();
+    const lightbox = new Lightbox(el);
+    lightbox.show();
+}));
 export default Lightbox;

@@ -11,7 +11,8 @@
     "jsx": "react",
     "allowJs": true,
     "downlevelIteration": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "moduleResolution": "node"
   },
   "include": [
       "src/**/*.ts",

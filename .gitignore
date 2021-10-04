@@ -1,6 +1,3 @@
-node_modules/
-bower_components/
-test/
+node_modules
 package-lock.json
-*.map
-*.dev.js
+.DS_STORE
