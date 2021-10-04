@@ -1,10 +1,10 @@
 /**
  * Lightbox for Bootstrap 5
  *
- * @file Creates a new Lightbox instance.
+ * @file Creates a modal with a lightbox carousel.
  */
 
-import Lightbox from '../dist/index.babel';
+import Lightbox from '../dist/index.esm';
 
 if (window.bootstrap) {
 	window.bootstrap.Lightbox = Lightbox;

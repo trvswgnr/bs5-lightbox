@@ -1,24 +1,19 @@
 {
   "compilerOptions": {
+    "target": "es5",
     "module": "commonjs",
-    "moduleResolution": "node",
-    "target": "es6",
-    "noImplicitAny": true,
-    "sourceMap": false,
-    "outDir": "dist",
-    "esModuleInterop": true,
-    "baseUrl": "./",
     "declaration": true,
+    "outDir": "./dist",
+    "noImplicitAny": false,
+    "esModuleInterop": true,
     "allowJs": true,
-    "downlevelIteration": true
+    "downlevelIteration": true,
+    "noImplicitUseStrict": true
   },
   "include": [
     "src/**/*.ts",
-    "src/**/*.esm.ts",
+    "src/**/*.esm.ts"
   ],
-  "exclude": [
-    "node_modules",
-    "**/*.spec.ts"
-  ],
+  "exclude": ["node_modules", "**/__tests__/*"],
   "skipLibCheck": true
 }

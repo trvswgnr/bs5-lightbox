@@ -5,7 +5,7 @@
  * --------------------------------------------------------------------------
  */
 
-import { defineJQueryPlugin, getElementFromSelector, isRTL, isVisible, getNextActiveElement, reflow, triggerTransitionEnd, typeCheckConfig } from 'bootstrap/js/src/util/index';
+import { getElementFromSelector, isRTL, isVisible, getNextActiveElement, reflow, triggerTransitionEnd, typeCheckConfig } from 'bootstrap/js/src/util/index';
 import EventHandler from 'bootstrap/js/src/dom/event-handler';
 import Manipulator from 'bootstrap/js/src/dom/manipulator';
 import SelectorEngine from 'bootstrap/js/src/dom/selector-engine';
@@ -20,7 +20,6 @@ import BaseComponent from 'bootstrap/js/src/base-component';
 const NAME = 'carousel';
 const DATA_KEY = 'bs.carousel';
 const EVENT_KEY = `.${DATA_KEY}`;
-const DATA_API_KEY = '.data-api';
 
 const ARROW_LEFT_KEY = 'ArrowLeft';
 const ARROW_RIGHT_KEY = 'ArrowRight';
@@ -66,8 +65,6 @@ const EVENT_TOUCHEND = `touchend${EVENT_KEY}`;
 const EVENT_POINTERDOWN = `pointerdown${EVENT_KEY}`;
 const EVENT_POINTERUP = `pointerup${EVENT_KEY}`;
 const EVENT_DRAG_START = `dragstart${EVENT_KEY}`;
-const EVENT_LOAD_DATA_API = `load${EVENT_KEY}${DATA_API_KEY}`;
-const EVENT_CLICK_DATA_API = `click${EVENT_KEY}${DATA_API_KEY}`;
 
 const CLASS_NAME_CAROUSEL = 'carousel';
 const CLASS_NAME_ACTIVE = 'active';
@@ -85,8 +82,6 @@ const SELECTOR_ITEM_IMG = '.carousel-item img';
 const SELECTOR_NEXT_PREV = '.carousel-item-next, .carousel-item-prev';
 const SELECTOR_INDICATORS = '.carousel-indicators';
 const SELECTOR_INDICATOR = '[data-bs-target]';
-const SELECTOR_DATA_SLIDE = '[data-bs-slide], [data-bs-slide-to]';
-const SELECTOR_DATA_RIDE = '[data-bs-ride="carousel"]';
 
 const POINTER_TYPE_TOUCH = 'touch';
 const POINTER_TYPE_PEN = 'pen';
