@@ -11,6 +11,14 @@ Documentation: https://trvswgnr.github.io/bs5-lightbox/
 npm i bs5-lightbox
 ```
 
+##### CDN:
+```html
+<script src="https://cdn.jsdelivr.net/npm/bs5-lightbox@1.6.0/dist/index.js"></script>
+```
+
+Or [download the file directly](https://raw.githubusercontent.com/trvswgnr/bs5-lightbox/main/dist/index.js) (right-click, Save As...)
+
+
 Lightbox for Bootstrap 5 will automatically initialize on import:
 ```js
 import 'bs5-lightbox'
