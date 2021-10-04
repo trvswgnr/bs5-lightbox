@@ -6,7 +6,7 @@
     "declarationMap": true,
     "rootDir": "./src/",
     "noImplicitAny": true,
-    "module": "es6",
+    "module": "umd",
     "target": "es6",
     "jsx": "react",
     "allowJs": true,
