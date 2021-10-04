@@ -29,6 +29,7 @@ document.querySelectorAll('.my-lightbox-toggle').forEach((el) => el.addEventList
 ```
 
 ## Contributing
+Lightbox for Bootstrap 5 is written in TypeScript and compiled to pure JavaScript.
 Modify the index.esm.ts file, run `npm run build` and create a pull request.
 
 You can help make this project even better and keep it up to date by making a small contribution! [Fund this project](https://github.com/sponsors/trvswgnr).
