@@ -24,15 +24,8 @@ import Lightbox from 'bs5-lightbox'
 const lightbox = new Lightbox('.my-lightbox-toggle')
 ```
 
-If you only want the `Lightbox` class without automatic initialization, import the module instead:
-```js
-import Lightbox from 'bs5-lightbox.esm'
-
-const lightbox = new Lightbox('.my-lightbox-toggle')
-```
-
 ## Contributing
-Modify the bs5-lightbox.esm.js file and create a pull request.
+Modify the index.esm.ts file, run `npm run build` and create a pull request.
 
 You can help make this project even better and keep it up to date by making a small contribution! [Fund this project](https://github.com/sponsors/trvswgnr).
 

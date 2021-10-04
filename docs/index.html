@@ -392,9 +392,9 @@ import 'bs5-lightbox'
 
 Or grab the latest JS from the CDN and add it after Bootstrap's JS:
 </div>
-<pre><code class="language-html">&lt;script src="https://cdn.jsdelivr.net/npm/bs5-lightbox@1.2.8/bs5-lightbox.min.js"&gt;&lt;/script&gt;</code></pre>
+<pre><code class="language-html">&lt;script src="https://cdn.jsdelivr.net/npm/bs5-lightbox@1.6.0/dist/index.js"&gt;&lt;/script&gt;</code></pre>
 <div class="markdown">
-Or [download the files directly](https://raw.githubusercontent.com/trvswgnr/bs5-lightbox/main/bs5-lightbox.min.js) (right-click, Save As...)
+Or [download the file directly](https://raw.githubusercontent.com/trvswgnr/bs5-lightbox/main/dist/index.js) (right-click, Save As...)
 
 Lightbox for Bootstrap 5 will automatically initialize on import, simply add `data-toggle="lightbox"` to your anchor tags.
 
@@ -409,15 +409,6 @@ If you want to target a different element, import the Lightbox class and instant
 __**`index.js`**__
 ```js
 import Lightbox from 'bs5-lightbox'
-
-const lightbox = new Lightbox('.my-lightbox-toggle')
-```
-
-If you only want the Lightbox class without automatic initialization, import the module instead:
-
-__**`index.js`**__
-```js
-import Lightbox from 'bs5-lightbox.esm'
 
 const lightbox = new Lightbox('.my-lightbox-toggle')
 ```
@@ -613,7 +604,7 @@ Obviously, you need Bootstrap (made for Bootstrap v5).
     </div>
 
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-	<script src="https://cdn.jsdelivr.net/npm/bs5-lightbox@1.2.8/bs5-lightbox.min.js"></script> 
+	<script src="https://cdn.jsdelivr.net/npm/bs5-lightbox@1.6.0/index.js"></script> 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/12.2.0/markdown-it.min.js" integrity="sha512-cTQeM/op796Fp1ZUxfech8gSMLT/HvrXMkRGdGZGQnbwuq/obG0UtcL04eByVa99qJik7WlnlQOr5/Fw5B36aw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
 	<script>
