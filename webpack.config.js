@@ -1,7 +1,10 @@
 const path = require('path');
 
-module.exports = {
-	entry: './src/index.ts',
+module.exports = () => {
+return {
+	entry: {
+		'index': './src/index.ts',
+	},
 	devtool: 'source-map',
 	module: {
 		rules: [
@@ -28,11 +31,12 @@ module.exports = {
 	},
 	output: {
 		path: path.resolve(__dirname, './dist'),
-		filename: 'bs5-lightbox.esm.js',
+		filename: '[name].js',
 		library: 'bs5-lightbox',
 		libraryTarget: 'umd',
 		globalObject: 'this',
 		umdNamedDefine: true,
 		clean: true
 	}
-};
+	}
+}

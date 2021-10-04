@@ -18,7 +18,7 @@
     "carousel"
   ],
   "license": "MIT",
-  "main": "./dist/bs5-lightbox",
+  "main": "./dist/index",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/trvswgnr/bs5-lightbox.git"
@@ -32,7 +32,8 @@
   "scripts": {
     "build": "webpack --mode=production",
     "dev": "webpack --mode=development",
-    "start": "webpack --mode=development --watch"
+    "start": "webpack --mode=development --watch",
+    "ts": "tsc src/*.ts"
   },
   "bundleDependencies": false,
   "deprecated": false,

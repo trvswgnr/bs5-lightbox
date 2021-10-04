@@ -2721,4 +2721,4 @@ document.querySelectorAll(_index_esm__WEBPACK_IMPORTED_MODULE_0__["default"].def
 /******/ })()
 ;
 });
-//# sourceMappingURL=bs5-lightbox.js.map
+//# sourceMappingURL=index.js.map
