@@ -1,6 +1,6 @@
 {
   "name": "bs5-lightbox",
-  "version": "1.5.0",
+  "version": "1.4.0",
   "author": {
     "name": "Travis Aaron Wagner",
     "email": "travis@travisaw.com"
@@ -18,8 +18,17 @@
     "carousel"
   ],
   "license": "MIT",
-  "main": "dist/index.esm",
-  "types": "dist/index.esm.d.ts",
+  "main": "./dist/index",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/trvswgnr/bs5-lightbox.git"
+  },
+  "dependencies": {
+    "@babel/preset-typescript": "^7.15.0"
+  },
+  "peerDependencies": {
+    "bootstrap": "^5.1.1"
+  },
   "scripts": {
     "bundle": "webpack --mode=production",
     "clean": "fse emptyDir --quiet dist/",
@@ -32,17 +41,14 @@
     "format": "prettier --write \"src/**/*.(js|ts)\"",
     "lint": "eslint src --ext .js,.ts",
     "lint:fix": "eslint src --fix --ext .js,.ts",
-    "publish": "npm publish",
     "serve": "browser-sync start --server --files \"dist/*.css, dist/*.js, **/*.html, !node_modules/**/*.html\" --open false",
     "watch:ts": "npm run-s build; onchange \"src/*.ts\" -- run-s build -s",
     "watch": "run-p serve watch:*",
     "start": "run-s clean watch"
   },
-  "browserslist": [
-    "last 1 version",
-    "not dead",
-    "ie >= 11"
-  ],
+  "bundleDependencies": false,
+  "deprecated": false,
+  "funding": "https://github.com/sponsors/trvswgnr",
   "devDependencies": {
     "@atao60/fse-cli": "^0.1.7",
     "@babel/cli": "^7.15.7",
@@ -79,10 +85,15 @@
     "webpack": "^5.56.0",
     "webpack-cli": "^4.8.0"
   },
-  "files": [
-    "dist/**/*"
-  ],
-  "dependencies": {
-    "regenerator-runtime": "^0.13.9"
-  }
+  "browserslist": [
+    ">= 0.5%",
+    "last 2 major versions",
+    "not dead",
+    "Chrome >= 60",
+    "Firefox >= 60",
+    "Firefox ESR",
+    "iOS >= 12",
+    "Safari >= 12",
+    "not Explorer <= 11"
+  ]
 }

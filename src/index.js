@@ -4,7 +4,7 @@
  * @file Creates a new Lightbox instance.
  */
 
-import Lightbox from '../dist/index.esm';
+import Lightbox from '../dist/index.babel';
 
 if (window.bootstrap) {
 	window.bootstrap.Lightbox = Lightbox;
