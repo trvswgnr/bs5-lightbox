@@ -41,4 +41,3 @@ declare namespace Lightbox {
     }
 }
 export default Lightbox;
-//# sourceMappingURL=index.esm.d.ts.map
