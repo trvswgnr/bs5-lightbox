@@ -1,4 +1,7 @@
 # Lightbox for Bootstrap 5
+
+[![](https://data.jsdelivr.com/v1/package/npm/bs5-lightbox/badge)](https://www.jsdelivr.com/package/npm/bs5-lightbox)
+
 A pure JavaScript Bootstrap 5 lightbox that supports images, galleries, YouTube, Vimeo, and Instagram—built around Bootstrap's Modal and Carousel plugins.
 
 Have you been using [Lightbox for Bootstrap (ekko-lightbox)](https://github.com/ashleydw/lightbox) but recently moved to Bootstrap 5? This is your replacement.
