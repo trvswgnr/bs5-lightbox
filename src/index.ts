@@ -94,7 +94,9 @@ class Lightbox {
 		} else if (this.el.dataset.gallery) {
 			galleryTarget = this.el.dataset.gallery;
 		}
-		const gallery = galleryTarget ? [...new Set(Array.from(document.querySelectorAll(`[data-gallery="${galleryTarget}"]`), (v: HTMLElement) => `${v.dataset.type ? 'embed' : ''}${this.getSrc(v)}`))] : [this.src];
+		const gallery = galleryTarget
+			? [...new Set(Array.from(document.querySelectorAll(`[data-gallery="${galleryTarget}"]`), (v: HTMLElement) => `${v.dataset.type ? 'embed' : ''}${this.getSrc(v)}`))]
+			: [this.src];
 		return gallery;
 	}
 
@@ -142,15 +144,13 @@ class Lightbox {
 				const params = new URLSearchParams(src.split('?')[1]);
 				let caption = '';
 				if (params.get('caption')) {
-					caption = `<figcaption class="m-0 p-2 text-center text-white small"><em>${params.get('caption')}</em></figcaption>`;
+					caption = `<p class="lightbox-caption m-0 p-2 text-center text-white small"><em>${params.get('caption')}</em></p>`;
 				}
 				return `
 				<div class="carousel-item ${!i ? 'active' : ''}" style="min-height: 100px">
 					${spinner}
-					<figure class="mb-0">
-						<div class="ratio ratio-16x9" style="background-color: #000;">${inner}</div>
-						${caption}
-					</figure>
+					<div class="ratio ratio-16x9" style="background-color: #000;">${inner}</div>
+					${caption}
 				</div>`;
 			})
 			.join('');
