@@ -44,7 +44,15 @@ class Lightbox {
         return Object.keys(obj).reduce((p, c) => Object.assign(p, { [c]: this.settings[c] }), {});
     }
     getSrc(el) {
-        return el.dataset.src || el.dataset.remote || el.href || 'http://via.placeholder.com/1600x900';
+        let src = el.dataset.src || el.dataset.remote || el.href || 'http://via.placeholder.com/1600x900';
+        if (!/\:\/\//.test(src)) {
+            src = window.location.origin + src;
+        }
+        const url = new URL(src);
+        if (el.dataset.footer || el.dataset.caption) {
+            url.searchParams.set('caption', el.dataset.footer || el.dataset.caption);
+        }
+        return url.toString();
     }
     getGalleryItems() {
         let galleryTarget;
@@ -57,9 +65,7 @@ class Lightbox {
         else if (this.el.dataset.gallery) {
             galleryTarget = this.el.dataset.gallery;
         }
-        const gallery = galleryTarget
-            ? [...new Set(Array.from(document.querySelectorAll(`[data-gallery="${galleryTarget}"]`), (v) => `${v.dataset.type ? 'embed' : ''}${this.getSrc(v)}`))]
-            : [this.src];
+        const gallery = galleryTarget ? [...new Set(Array.from(document.querySelectorAll(`[data-gallery="${galleryTarget}"]`), (v) => `${v.dataset.type ? 'embed' : ''}${this.getSrc(v)}`))] : [this.src];
         return gallery;
     }
     getYoutubeId(src) {
@@ -71,7 +77,7 @@ class Lightbox {
     getInstagramEmbed(src) {
         if (/instagram/.test(src)) {
             src += /\/embed$/.test(src) ? '' : '/embed';
-            return `<div class="ratio ratio-16x9" style="max-height: 100%;"><iframe src="${src}" class="start-50 translate-middle-x" style="max-width: 500px" frameborder="0" scrolling="no" allowtransparency="true"></iframe></div>`;
+            return `<iframe src="${src}" class="start-50 translate-middle-x" style="max-width: 500px" frameborder="0" scrolling="no" allowtransparency="true"></iframe>`;
         }
     }
     isEmbed(src) {
@@ -87,7 +93,7 @@ class Lightbox {
             src = src.replace(/\/$/, '');
             let onload = '';
             onload += /\.png/.test(src) ? `this.add.previousSibling.remove()` : '';
-            let inner = `<div class="ratio ratio-16x9"><img src="${src}" class="d-block w-100 h-100 img-fluid" style="z-index: 1; object-fit: contain;" onload="${onload}" /></div>`;
+            let inner = `<img src="${src}" class="d-block w-100 h-100 img-fluid" style="z-index: 1; object-fit: contain;" onload="${onload}" />`;
             let attributes = '';
             const instagramEmbed = this.getInstagramEmbed(src);
             const youtubeId = this.getYoutubeId(src);
@@ -98,10 +104,22 @@ class Lightbox {
                     src = `https://www.youtube.com/embed/${youtubeId}`;
                     attributes = 'title="YouTube video player" frameborder="0" allow="accelerometer autoplay clipboard-write encrypted-media gyroscope picture-in-picture"';
                 }
-                inner = instagramEmbed || `<div class="ratio ratio-16x9"><iframe src="${src}" ${attributes} allowfullscreen></iframe></div>`;
+                inner = instagramEmbed || `<iframe src="${src}" ${attributes} allowfullscreen></iframe>`;
             }
             const spinner = `<div class="position-absolute top-50 start-50 translate-middle text-white"><div class="spinner-border" style="width: 3rem height: 3rem" role="status"></div></div>`;
-            return `<div class="carousel-item ${!i ? 'active' : ''}" style="min-height: 100px">${spinner}${inner}</div>`;
+            const params = new URLSearchParams(src.split('?')[1]);
+            let caption = '';
+            if (params.get('caption')) {
+                caption = `<figcaption class="m-0 p-2 text-center text-white small"><em>${params.get('caption')}</em></figcaption>`;
+            }
+            return `
+				<div class="carousel-item ${!i ? 'active' : ''}" style="min-height: 100px">
+					${spinner}
+					<figure class="mb-0">
+						<div class="ratio ratio-16x9" style="background-color: #000;">${inner}</div>
+						${caption}
+					</figure>
+				</div>`;
         })
             .join('');
         const controlsHtml = this.sources.length < 2
@@ -116,7 +134,7 @@ class Lightbox {
 				<span class="visually-hidden">Next</span>
 			</button>`;
         const html = `
-			<div id="lightboxCarousel-${this.hash}" class="lightbox-carousel carousel" data-bs-ride="carousel">
+			<div id="lightboxCarousel-${this.hash}" class="lightbox-carousel carousel" data-bs-ride="carousel" data-bs-interval="${this.carouselOptions.interval}">
 				<div class="carousel-inner">
 					${slidesHtml}
 				</div>
@@ -125,8 +143,8 @@ class Lightbox {
         template.innerHTML = html.trim();
         this.carouselElement = template.content.firstChild;
         this.carousel = new bootstrap.Carousel(this.carouselElement, this.carouselOptions);
+        console.log(this.carousel);
         this.carousel.to(this.sources.includes(this.src) ? this.sources.indexOf(this.src) : 0);
-        // this.carouselElement.querySelector('[data-bs-slide="prev"]').addEventListener('click', this.carousel.prev)
         return this.carousel;
     }
     createModal() {
@@ -135,7 +153,7 @@ class Lightbox {
         const html = `
 			<div class="modal lightbox fade" id="lightboxModal-${this.hash}" tabindex="-1" aria-hidden="true">
 				<div class="modal-dialog modal-dialog-centered modal-xl">
-					<div class="modal-content border-0" style="background: black">
+					<div class="modal-content border-0 bg-transparent">
 						<div class="modal-body p-0">
 							<button type="button" class="btn-close position-absolute top-0 end-0 p-3" data-bs-dismiss="modal" aria-label="Close" style="z-index: 2; background: none;">${btnInner}</button>
 						</div>
