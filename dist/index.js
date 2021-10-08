@@ -143,7 +143,6 @@ class Lightbox {
         template.innerHTML = html.trim();
         this.carouselElement = template.content.firstChild;
         this.carousel = new bootstrap.Carousel(this.carouselElement, this.carouselOptions);
-        console.log(this.carousel);
         this.carousel.to(this.sources.includes(this.src) ? this.sources.indexOf(this.src) : 0);
         return this.carousel;
     }
@@ -164,6 +163,7 @@ class Lightbox {
         this.modalElement = template.content.firstChild;
         this.modalElement.querySelector('.modal-body').appendChild(this.carouselElement);
         this.modalElement.addEventListener('hidden.bs.modal', () => this.modalElement.remove());
+        this.modalElement.querySelector('[data-bs-dismiss]').addEventListener('click', () => this.modal.hide());
         this.modal = new bootstrap.Modal(this.modalElement, this.modalOptions);
         return this.modal;
     }
