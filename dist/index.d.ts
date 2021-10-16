@@ -38,6 +38,7 @@ declare namespace Lightbox {
     interface Options extends bootstrap.Modal.Options, bootstrap.Carousel.Options {
         target: string | HTMLElement;
         gallery: string | string[];
+        size: 'default' | 'sm' | 'lg' | 'xl' | 'fullscreen';
     }
 }
 export default Lightbox;

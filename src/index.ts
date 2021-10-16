@@ -45,7 +45,8 @@ class Lightbox {
 		...bootstrap.Carousel.Default,
 		interval: false,
 		target: '[data-toggle="lightbox"]',
-		gallery: ''
+		gallery: '',
+		size: 'xl'
 	};
 
 	public modalOptions: bootstrap.Modal.Options = (() => this.setOptionsFromSettings(bootstrap.Modal.Default))();
@@ -168,8 +169,12 @@ class Lightbox {
 				<span class="visually-hidden">Next</span>
 			</button>`;
 
+		let classes = 'lightbox-carousel carousel';
+		if (this.settings.size === 'fullscreen') {
+			classes += ' position-absolute w-100 translate-middle top-50 start-50';
+		}
 		const html = `
-			<div id="lightboxCarousel-${this.hash}" class="lightbox-carousel carousel" data-bs-ride="carousel" data-bs-interval="${this.carouselOptions.interval}">
+			<div id="lightboxCarousel-${this.hash}" class="${classes}" data-bs-ride="carousel" data-bs-interval="${this.carouselOptions.interval}">
 				<div class="carousel-inner">
 					${slidesHtml}
 				</div>
@@ -189,7 +194,7 @@ class Lightbox {
 			'<svg xmlns="http://www.w3.org/2000/svg" style="position: relative; top: -5px;" viewBox="0 0 16 16" fill="#fff"><path d="M.293.293a1 1 0 011.414 0L8 6.586 14.293.293a1 1 0 111.414 1.414L9.414 8l6.293 6.293a1 1 0 01-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 01-1.414-1.414L6.586 8 .293 1.707a1 1 0 010-1.414z"/></svg>';
 		const html = `
 			<div class="modal lightbox fade" id="lightboxModal-${this.hash}" tabindex="-1" aria-hidden="true">
-				<div class="modal-dialog modal-dialog-centered modal-xl">
+				<div class="modal-dialog modal-dialog-centered modal-${this.settings.size}">
 					<div class="modal-content border-0 bg-transparent">
 						<div class="modal-body p-0">
 							<button type="button" class="btn-close position-absolute top-0 end-0 p-3" data-bs-dismiss="modal" aria-label="Close" style="z-index: 2; background: none;">${btnInner}</button>
@@ -218,15 +223,16 @@ namespace Lightbox {
 	export interface Options extends bootstrap.Modal.Options, bootstrap.Carousel.Options {
 		target: string | HTMLElement;
 		gallery: string | string[];
+		size: 'default' | 'sm' | 'lg' | 'xl' | 'fullscreen';
 	}
 }
 
-document.querySelectorAll(Lightbox.defaultSelector).forEach((el: HTMLElement) =>
-	el.addEventListener('click', (e) => {
-		e.preventDefault();
-		const lightbox = new Lightbox(el);
-		lightbox.show();
-	})
-);
+(Lightbox as any).initialize = function (e: Event) {
+	e.preventDefault();
+	const lightbox = new Lightbox(this);
+	lightbox.show();
+};
+
+document.querySelectorAll(Lightbox.defaultSelector).forEach((el: HTMLElement) => el.addEventListener('click', (Lightbox as any).initialize));
 
 export default Lightbox;
