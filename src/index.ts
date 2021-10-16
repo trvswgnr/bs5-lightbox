@@ -60,6 +60,12 @@ class Lightbox {
 	public type: Lightbox.AllowedMedia;
 	public el: HTMLElement;
 
+	public static initialize = function (e: Event) {
+		e.preventDefault();
+		const lightbox = new Lightbox(this);
+		lightbox.show();
+	};
+
 	public show() {
 		document.body.appendChild(this.modalElement);
 		this.modal.show();
@@ -217,7 +223,6 @@ class Lightbox {
 		return Array.from({ length }, () => Math.floor(Math.random() * 36).toString(36)).join('');
 	}
 }
-
 namespace Lightbox {
 	export type AllowedMedia = typeof Lightbox.allowedMediaTypes[number];
 	export interface Options extends bootstrap.Modal.Options, bootstrap.Carousel.Options {
@@ -227,12 +232,6 @@ namespace Lightbox {
 	}
 }
 
-(Lightbox as any).initialize = function (e: Event) {
-	e.preventDefault();
-	const lightbox = new Lightbox(this);
-	lightbox.show();
-};
-
-document.querySelectorAll(Lightbox.defaultSelector).forEach((el: HTMLElement) => el.addEventListener('click', (Lightbox as any).initialize));
+document.querySelectorAll(Lightbox.defaultSelector).forEach((el: HTMLElement) => el.addEventListener('click', Lightbox.initialize));
 
 export default Lightbox;

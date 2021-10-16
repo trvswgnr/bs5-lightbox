@@ -21,6 +21,7 @@ declare class Lightbox {
     src: string;
     type: Lightbox.AllowedMedia;
     el: HTMLElement;
+    static initialize: (e: Event) => void;
     show(): void;
     hide(): void;
     private setOptionsFromSettings;
