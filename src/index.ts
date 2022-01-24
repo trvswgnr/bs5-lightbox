@@ -166,11 +166,11 @@ class Lightbox {
 			this.sources.length < 2
 				? ''
 				: `
-			<button class="carousel-control carousel-control-prev h-75 m-auto" type="button" data-bs-target="#lightboxCarousel-${this.hash}" data-bs-slide="prev">
+			<button id="#lightboxCarousel-${this.hash}-prev" class="carousel-control carousel-control-prev h-75 m-auto" type="button" data-bs-target="#lightboxCarousel-${this.hash}" data-bs-slide="prev">
 				<span class="carousel-control-prev-icon" aria-hidden="true"></span>
 				<span class="visually-hidden">Previous</span>
 			</button>
-			<button class="carousel-control carousel-control-next h-75 m-auto" type="button" data-bs-target="#lightboxCarousel-${this.hash}" data-bs-slide="next">
+			<button id="#lightboxCarousel-${this.hash}-next" class="carousel-control carousel-control-next h-75 m-auto" type="button" data-bs-target="#lightboxCarousel-${this.hash}" data-bs-slide="next">
 				<span class="carousel-control-next-icon" aria-hidden="true"></span>
 				<span class="visually-hidden">Next</span>
 			</button>`;
@@ -189,8 +189,24 @@ class Lightbox {
 
 		template.innerHTML = html.trim();
 		this.carouselElement = template.content.firstChild as HTMLElement;
-		this.carousel = new bootstrap.Carousel(this.carouselElement, this.carouselOptions);
+		const carouselOptions = {
+			...this.carouselOptions,
+			keyboard: false
+		};
+		this.carousel = new bootstrap.Carousel(this.carouselElement, carouselOptions);
 		this.carousel.to(this.sources.includes(this.src) ? this.sources.indexOf(this.src) : 0);
+		if (this.carouselOptions.keyboard === true) {
+			document.addEventListener('keydown', (e) => {
+				if (e.code === 'ArrowLeft') {
+					document.getElementById(`#lightboxCarousel-${this.hash}-prev`)?.click();
+					return false;
+				}
+				if (e.code === 'ArrowRight') {
+					document.getElementById(`#lightboxCarousel-${this.hash}-next`)?.click();
+					return false;
+				}
+			});
+		}
 		return this.carousel;
 	}
 

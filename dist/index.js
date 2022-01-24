@@ -125,11 +125,11 @@ class Lightbox {
         const controlsHtml = this.sources.length < 2
             ? ''
             : `
-			<button class="carousel-control carousel-control-prev h-75 m-auto" type="button" data-bs-target="#lightboxCarousel-${this.hash}" data-bs-slide="prev">
+			<button id="#lightboxCarousel-${this.hash}-prev" class="carousel-control carousel-control-prev h-75 m-auto" type="button" data-bs-target="#lightboxCarousel-${this.hash}" data-bs-slide="prev">
 				<span class="carousel-control-prev-icon" aria-hidden="true"></span>
 				<span class="visually-hidden">Previous</span>
 			</button>
-			<button class="carousel-control carousel-control-next h-75 m-auto" type="button" data-bs-target="#lightboxCarousel-${this.hash}" data-bs-slide="next">
+			<button id="#lightboxCarousel-${this.hash}-next" class="carousel-control carousel-control-next h-75 m-auto" type="button" data-bs-target="#lightboxCarousel-${this.hash}" data-bs-slide="next">
 				<span class="carousel-control-next-icon" aria-hidden="true"></span>
 				<span class="visually-hidden">Next</span>
 			</button>`;
@@ -146,8 +146,22 @@ class Lightbox {
 			</div>`;
         template.innerHTML = html.trim();
         this.carouselElement = template.content.firstChild;
-        this.carousel = new bootstrap.Carousel(this.carouselElement, this.carouselOptions);
+        const carouselOptions = Object.assign(Object.assign({}, this.carouselOptions), { keyboard: false });
+        this.carousel = new bootstrap.Carousel(this.carouselElement, carouselOptions);
         this.carousel.to(this.sources.includes(this.src) ? this.sources.indexOf(this.src) : 0);
+        if (this.carouselOptions.keyboard === true) {
+            document.addEventListener('keydown', (e) => {
+                var _a, _b;
+                if (e.code === 'ArrowLeft') {
+                    (_a = document.getElementById(`#lightboxCarousel-${this.hash}-prev`)) === null || _a === void 0 ? void 0 : _a.click();
+                    return false;
+                }
+                if (e.code === 'ArrowRight') {
+                    (_b = document.getElementById(`#lightboxCarousel-${this.hash}-next`)) === null || _b === void 0 ? void 0 : _b.click();
+                    return false;
+                }
+            });
+        }
         return this.carousel;
     }
     createModal() {
