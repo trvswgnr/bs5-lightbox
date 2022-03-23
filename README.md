@@ -8,7 +8,7 @@ Have you been using [Lightbox for Bootstrap (ekko-lightbox)](https://github.com/
 
 Documentation: https://trvswgnr.github.io/bs5-lightbox/
 
-If you enjoy using Bootstrap 5 Lightbox please star this repo.
+<sub>If you enjoy using Bootstrap 5 Lightbox please star this repo.</sub>
 
 ## Installation
 ##### Install with NPM:
