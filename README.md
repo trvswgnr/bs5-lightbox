@@ -8,6 +8,10 @@ Have you been using [Lightbox for Bootstrap (ekko-lightbox)](https://github.com/
 
 Documentation: https://trvswgnr.github.io/bs5-lightbox/
 
+If you enjoy using Bootstrap 5 Lightbox please star this repo:
+<!-- Place this tag where you want the button to render. -->
+<a class="github-button" href="https://github.com/trvswgnr/bs5-lightbox" data-color-scheme="no-preference: light; light: light; dark: dark;" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star trvswgnr/bs5-lightbox on GitHub">Star</a>
+
 ## Installation
 ##### Install with NPM:
 ```shell
