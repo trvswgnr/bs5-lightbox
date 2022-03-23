@@ -93,9 +93,7 @@ class Lightbox {
         const slidesHtml = this.sources
             .map((src, i) => {
             src = src.replace(/\/$/, '');
-            let onload = '';
-            onload += /\.png/.test(src) ? `this.add.previousSibling.remove()` : '';
-            let inner = `<img src="${src}" class="d-block w-100 h-100 img-fluid" style="z-index: 1; object-fit: contain;" onload="${onload}" />`;
+            let inner = `<img src="${src}" class="d-block w-100 h-100 img-fluid" style="z-index: 1; object-fit: contain;" />`;
             let attributes = '';
             const instagramEmbed = this.getInstagramEmbed(src);
             const youtubeId = this.getYoutubeId(src);
