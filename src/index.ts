@@ -121,9 +121,9 @@ class Lightbox {
 	}
 
 	private isEmbed(src: string): boolean {
-		const regex = new RegExp(Lightbox.allowedEmbedTypes.join('|'));
+		const regex = new RegExp('(' + Lightbox.allowedEmbedTypes.join('|') + ')');
 		const isEmbed = regex.test(src);
-		const isImg = /\.(png|jpe?g|gif|svg|webp)/.test(src);
+		const isImg = /\.(png|jpe?g|gif|svg|webp)/.test(src) || this.el.dataset.type === 'image';
 		return isEmbed || !isImg;
 	}
 
