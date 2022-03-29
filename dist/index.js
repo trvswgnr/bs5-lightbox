@@ -151,8 +151,6 @@ class Lightbox {
         const carouselOptions = Object.assign(Object.assign({}, this.carouselOptions), { keyboard: false });
         this.carousel = new bootstrap.Carousel(this.carouselElement, carouselOptions);
         const elSrc = this.type && this.type !== 'image' ? this.type + this.src : this.src;
-        console.log('this.sources', this.sources);
-        console.log('elSrc', elSrc);
         this.carousel.to(this.sources.includes(elSrc) ? this.sources.indexOf(elSrc) : 0);
         if (this.carouselOptions.keyboard === true) {
             document.addEventListener('keydown', (e) => {
