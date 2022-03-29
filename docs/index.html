@@ -638,6 +638,10 @@ Obviously, you need Bootstrap (made for Bootstrap 5).
 			});
 			hljs.highlightAll();
 
+			document.querySelectorAll('.language-js').forEach(function(el) {
+				el.innerHTML = md.utils.unescapeAll(el.innerHTML);
+			});
+
 			var mainNavItems = document.querySelectorAll('#main-nav .list-group-item');
 			var mainNavItemsAnchor = document.querySelectorAll('#main-nav .list-group-item a');
 			mainNavItemsAnchor.forEach(function(el) {
