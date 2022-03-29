@@ -206,11 +206,13 @@ class Lightbox {
 		if (this.carouselOptions.keyboard === true) {
 			document.addEventListener('keydown', (e) => {
 				if (e.code === 'ArrowLeft') {
-					document.getElementById(`#lightboxCarousel-${this.hash}-prev`)?.click();
+					const prev = document.getElementById(`#lightboxCarousel-${this.hash}-prev`);
+					if (prev) prev.click();
 					return false;
 				}
 				if (e.code === 'ArrowRight') {
-					document.getElementById(`#lightboxCarousel-${this.hash}-next`)?.click();
+					const next = document.getElementById(`#lightboxCarousel-${this.hash}-next`);
+					if (next) next.click();
 					return false;
 				}
 			});
