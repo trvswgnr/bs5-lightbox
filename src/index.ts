@@ -15,7 +15,7 @@ const bootstrap = {
 
 class Lightbox {
 	static allowedEmbedTypes = ['embed', 'youtube', 'vimeo', 'instagram', 'url'] as const;
-	static allowedMediaTypes = [...Lightbox.allowedEmbedTypes, 'image'] as const;
+	static allowedMediaTypes = [...Lightbox.allowedEmbedTypes, 'image', 'html'] as const;
 	static defaultSelector = '[data-toggle="lightbox"]' as const;
 
 	constructor(el: string | HTMLElement, options: any = {}) {
@@ -80,6 +80,10 @@ class Lightbox {
 
 	private getSrc(el: HTMLElement): string {
 		let src = el.dataset.src || el.dataset.remote || (el as HTMLAnchorElement).href || 'http://via.placeholder.com/1600x900';
+		console.log('el.dataset.type', el.dataset.type);
+		if (el.dataset.type === 'html') {
+			return src;
+		}
 		if (!/\:\/\//.test(src)) {
 			src = window.location.origin + src;
 		}
@@ -109,7 +113,7 @@ class Lightbox {
 						)
 					)
 			  ]
-			: [this.src];
+			: [`${this.type && this.type !== 'image' ? this.type : ''}${this.src}`];
 		return gallery;
 	}
 
@@ -140,6 +144,7 @@ class Lightbox {
 			.map((src, i) => {
 				src = src.replace(/\/$/, '');
 				const regex = new RegExp(`^(${types})`, 'i');
+				const isHtml = /^html/.test(src);
 				if (regex.test(src)) {
 					src = src.replace(regex, '');
 				}
@@ -153,6 +158,10 @@ class Lightbox {
 						attributes = 'title="YouTube video player" frameborder="0" allow="accelerometer autoplay clipboard-write encrypted-media gyroscope picture-in-picture"';
 					}
 					inner = instagramEmbed || `<iframe src="${src}" ${attributes} allowfullscreen></iframe>`;
+				}
+				if (isHtml) {
+					console.log('is html');
+					inner = src;
 				}
 				const spinner = `<div class="position-absolute top-50 start-50 translate-middle text-white"><div class="spinner-border" style="width: 3rem height: 3rem" role="status"></div></div>`;
 				const params = new URLSearchParams(src.split('?')[1]);

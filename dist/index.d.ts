@@ -6,7 +6,7 @@
  */
 declare class Lightbox {
     static allowedEmbedTypes: readonly ["embed", "youtube", "vimeo", "instagram", "url"];
-    static allowedMediaTypes: readonly ["embed", "youtube", "vimeo", "instagram", "url", "image"];
+    static allowedMediaTypes: readonly ["embed", "youtube", "vimeo", "instagram", "url", "image", "html"];
     static defaultSelector: "[data-toggle=\"lightbox\"]";
     constructor(el: string | HTMLElement, options?: any);
     private hash;
