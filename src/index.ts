@@ -32,7 +32,7 @@ class Lightbox {
 		this.el = el;
 		this.type = (el.dataset.type as Lightbox.AllowedMedia) || 'image';
 		this.src = this.getSrc(el);
-		this.src = this.type !== 'image' ? 'embed' + this.src : this.src;
+		this.src = this.type + this.src;
 		this.sources = this.getGalleryItems();
 		this.createCarousel();
 		this.createModal();
@@ -102,7 +102,7 @@ class Lightbox {
 			galleryTarget = this.el.dataset.gallery;
 		}
 		const gallery = galleryTarget
-			? [...new Set(Array.from(document.querySelectorAll(`[data-gallery="${galleryTarget}"]`), (v: HTMLElement) => `${v.dataset.type ? 'embed' : ''}${this.getSrc(v)}`))]
+			? [...new Set(Array.from(document.querySelectorAll(`[data-gallery="${galleryTarget}"]`), (v: HTMLElement) => `${v.dataset.type ? v.dataset.type : ''}${this.getSrc(v)}`))]
 			: [this.src];
 		return gallery;
 	}
@@ -123,22 +123,25 @@ class Lightbox {
 	private isEmbed(src: string): boolean {
 		const regex = new RegExp('(' + Lightbox.allowedEmbedTypes.join('|') + ')');
 		const isEmbed = regex.test(src);
-		const isImg = /\.(png|jpe?g|gif|svg|webp)/.test(src) || this.el.dataset.type === 'image';
+		const isImg = /\.(png|jpe?g|gif|svg|webp)/i.test(src) || this.el.dataset.type === 'image';
 		return isEmbed || !isImg;
 	}
 
 	private createCarousel(): bootstrap.Carousel {
 		const template = document.createElement('template');
-
+		const types = Lightbox.allowedMediaTypes.join('|');
 		const slidesHtml = this.sources
 			.map((src, i) => {
 				src = src.replace(/\/$/, '');
+				const regex = new RegExp(`^(${types})`, 'i');
+				if (regex.test(src)) {
+					src = src.replace(regex, '');
+				}
 				let inner = `<img src="${src}" class="d-block w-100 h-100 img-fluid" style="z-index: 1; object-fit: contain;" />`;
 				let attributes = '';
 				const instagramEmbed = this.getInstagramEmbed(src);
 				const youtubeId = this.getYoutubeId(src);
 				if (this.isEmbed(src)) {
-					if (/^embed/.test(src)) src = src.substring(5);
 					if (youtubeId) {
 						src = `https://www.youtube.com/embed/${youtubeId}`;
 						attributes = 'title="YouTube video player" frameborder="0" allow="accelerometer autoplay clipboard-write encrypted-media gyroscope picture-in-picture"';
