@@ -28,7 +28,6 @@ class Lightbox {
         this.el = el;
         this.type = el.dataset.type || 'image';
         this.src = this.getSrc(el);
-        this.src = this.type + this.src;
         this.sources = this.getGalleryItems();
         this.createCarousel();
         this.createModal();
@@ -66,7 +65,9 @@ class Lightbox {
             galleryTarget = this.el.dataset.gallery;
         }
         const gallery = galleryTarget
-            ? [...new Set(Array.from(document.querySelectorAll(`[data-gallery="${galleryTarget}"]`), (v) => `${v.dataset.type ? v.dataset.type : ''}${this.getSrc(v)}`))]
+            ? [
+                ...new Set(Array.from(document.querySelectorAll(`[data-gallery="${galleryTarget}"]`), (v) => `${v.dataset.type && v.dataset.type !== 'image' ? v.dataset.type : ''}${this.getSrc(v)}`))
+            ]
             : [this.src];
         return gallery;
     }
@@ -149,7 +150,10 @@ class Lightbox {
         this.carouselElement = template.content.firstChild;
         const carouselOptions = Object.assign(Object.assign({}, this.carouselOptions), { keyboard: false });
         this.carousel = new bootstrap.Carousel(this.carouselElement, carouselOptions);
-        this.carousel.to(this.sources.includes(this.src) ? this.sources.indexOf(this.src) : 0);
+        const elSrc = this.type && this.type !== 'image' ? this.type + this.src : this.src;
+        console.log('this.sources', this.sources);
+        console.log('elSrc', elSrc);
+        this.carousel.to(this.sources.includes(elSrc) ? this.sources.indexOf(elSrc) : 0);
         if (this.carouselOptions.keyboard === true) {
             document.addEventListener('keydown', (e) => {
                 var _a, _b;
