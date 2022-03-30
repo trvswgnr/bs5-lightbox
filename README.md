@@ -1,6 +1,6 @@
 # Lightbox for Bootstrap 5
 
-[![](https://data.jsdelivr.com/v1/package/npm/bs5-lightbox/badge)](https://www.jsdelivr.com/package/npm/bs5-lightbox) ![Downloads](https://img.shields.io/npm/dm/bs5-lightbox.svg?style=flat) [![Featured on Openbase](https://badges.openbase.com/js/featured/bs5-lightbox.svg?token=R2MqRDwb93ap0dYGkIBBPigErEYve+e1dnfTDZImQog=)](https://openbase.com/js/bs5-lightbox?utm_source=embedded&amp;utm_medium=badge&amp;utm_campaign=rate-badge)
+[![](https://data.jsdelivr.com/v1/package/npm/bs5-lightbox/badge)](https://www.jsdelivr.com/package/npm/bs5-lightbox) ![Downloads](https://img.shields.io/npm/dm/bs5-lightbox.svg?style=flat) [![Featured on Openbase](https://badges.openbase.com/js/featured/bs5-lightbox.svg?token=R2MqRDwb93ap0dYGkIBBPigErEYve+e1dnfTDZImQog=)](https://openbase.com/js/bs5-lightbox?utm_source=embedded&amp;utm_medium=badge&amp;utm_campaign=rate-badge) ![npm bundle size](https://img.shields.io/bundlephobia/min/bs5-lightbox)
 
 A pure JavaScript Bootstrap 5 lightbox that supports images, galleries, YouTube, Vimeo, and Instagram—built around Bootstrap's Modal and Carousel plugins.
 
