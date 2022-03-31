@@ -9,7 +9,13 @@ Documentation: https://trvswgnr.github.io/bs5-lightbox/
 <sub>If you enjoy using Bootstrap 5 Lightbox please star this repo.</sub>
 
 ## Status
-[![github latest release](https://badgen.net/github/tag/trvswgnr/bs5-lightbox?label=release)](https://github.com/trvswgnr/bs5-lightbox/releases/latest) [![jsdelivr hits per month](https://data.jsdelivr.com/v1/package/npm/bs5-lightbox/badge?style=rounded)](https://www.jsdelivr.com/package/npm/bs5-lightbox) [![npm downloads](https://badgen.net/npm/dt/bs5-lightbox?label=npm%20downloads&color=blue)](https://www.npmjs.com/package/bs5-lightbox) [![npm minzipped size](https://badgen.net/bundlephobia/minzip/bs5-lightbox?label=gzip%20size&color=green)](https://bundlephobia.com/package/bs5-lightbox) [![npm version](https://badgen.net/npm/v/bs5-lightbox)](https://www.npmjs.com/package/bs5-lightbox) ![Libraries.io dependency status for latest release](https://img.shields.io/librariesio/release/npm/bs5-lightbox) [![Featured on Openbase](https://badges.openbase.com/js/featured/bs5-lightbox.svg?token=R2MqRDwb93ap0dYGkIBBPigErEYve+e1dnfTDZImQog=)](https://openbase.com/js/bs5-lightbox)
+[![github latest release](https://badgen.net/github/tag/trvswgnr/bs5-lightbox?label=release)](https://github.com/trvswgnr/bs5-lightbox/releases/latest)
+[![jsdelivr hits per month](https://data.jsdelivr.com/v1/package/npm/bs5-lightbox/badge?style=rounded)](https://www.jsdelivr.com/package/npm/bs5-lightbox)
+[![npm downloads](https://badgen.net/npm/dt/bs5-lightbox?label=npm%20downloads&color=blue)](https://www.npmjs.com/package/bs5-lightbox)
+[![npm minzipped size](https://badgen.net/bundlephobia/minzip/bs5-lightbox?label=gzip%20size&color=green)](https://bundlephobia.com/package/bs5-lightbox)
+[![npm version](https://badgen.net/npm/v/bs5-lightbox)](https://www.npmjs.com/package/bs5-lightbox)
+![Libraries.io dependency status for latest release](https://img.shields.io/librariesio/release/npm/bs5-lightbox)
+[![Featured on Openbase](https://badges.openbase.com/js/featured/bs5-lightbox.svg?token=R2MqRDwb93ap0dYGkIBBPigErEYve+e1dnfTDZImQog=)](https://openbase.com/js/bs5-lightbox)
 
 ## Installation
 ##### Install with NPM:
