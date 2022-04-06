@@ -44,6 +44,10 @@ class Lightbox {
     }
     getSrc(el) {
         let src = el.dataset.src || el.dataset.remote || el.href || 'http://via.placeholder.com/1600x900';
+        console.log('el.dataset.type', el.dataset.type);
+        if (el.dataset.type === 'html') {
+            return src;
+        }
         if (!/\:\/\//.test(src)) {
             src = window.location.origin + src;
         }
@@ -68,7 +72,7 @@ class Lightbox {
             ? [
                 ...new Set(Array.from(document.querySelectorAll(`[data-gallery="${galleryTarget}"]`), (v) => `${v.dataset.type && v.dataset.type !== 'image' ? v.dataset.type : ''}${this.getSrc(v)}`))
             ]
-            : [this.src];
+            : [`${this.type && this.type !== 'image' ? this.type : ''}${this.src}`];
         return gallery;
     }
     getYoutubeId(src) {
@@ -96,6 +100,7 @@ class Lightbox {
             .map((src, i) => {
             src = src.replace(/\/$/, '');
             const regex = new RegExp(`^(${types})`, 'i');
+            const isHtml = /^html/.test(src);
             if (regex.test(src)) {
                 src = src.replace(regex, '');
             }
@@ -109,6 +114,10 @@ class Lightbox {
                     attributes = 'title="YouTube video player" frameborder="0" allow="accelerometer autoplay clipboard-write encrypted-media gyroscope picture-in-picture"';
                 }
                 inner = instagramEmbed || `<iframe src="${src}" ${attributes} allowfullscreen></iframe>`;
+            }
+            if (isHtml) {
+                console.log('is html');
+                inner = src;
             }
             const spinner = `<div class="position-absolute top-50 start-50 translate-middle text-white"><div class="spinner-border" style="width: 3rem height: 3rem" role="status"></div></div>`;
             const params = new URLSearchParams(src.split('?')[1]);
@@ -193,7 +202,7 @@ class Lightbox {
     }
 }
 Lightbox.allowedEmbedTypes = ['embed', 'youtube', 'vimeo', 'instagram', 'url'];
-Lightbox.allowedMediaTypes = [...Lightbox.allowedEmbedTypes, 'image'];
+Lightbox.allowedMediaTypes = [...Lightbox.allowedEmbedTypes, 'image', 'html'];
 Lightbox.defaultSelector = '[data-toggle="lightbox"]';
 Lightbox.initialize = function (e) {
     e.preventDefault();

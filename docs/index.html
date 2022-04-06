@@ -325,6 +325,7 @@
 								<li class=""><a href="#force-type" class="dropdown-item">Force type</a></li>
 								<li class=""><a href="#hidden-elements" class="dropdown-item">Hidden elements</a></li>
 								<li class=""><a href="#remote-content" class="dropdown-item">Remote content</a></li>
+								<li class=""><a href="#custom-html" class="dropdown-item">Custom HTML</a></li>
 							</ul>
 						</li>
 						<li class="nav-item">
@@ -373,6 +374,7 @@
 					<li class="list-group-item"><a href="#force-type">Force type</a></li>
 					<li class="list-group-item"><a href="#hidden-elements">Hidden elements</a></li>
 					<li class="list-group-item"><a href="#remote-content">Remote content</a></li>
+					<li class="list-group-item"><a href="#custom-html">Custom HTML</a></li>
 				</ul>
 				<li class="list-group-item"><a href="#contributing">Contributing</a></li>
 			</ul>
@@ -555,7 +557,7 @@ Obviously, you need Bootstrap (made for Bootstrap 5).
 <h3>Force type</h3>
 <p>If the images you are linking to have no extension, the lightbox cannot detect that is an image;
 	therefore you need to tell the lightbox what <code>data-type</code> it is.</p>
-<p>Current allowed types are: <code>['image', 'youtube', 'vimeo', 'instagram', 'video', 'url']</code>
+<p>Current allowed types are: <code>['image', 'youtube', 'vimeo', 'instagram', 'video', 'url', 'html']</code>
 </p>
 <div data-code="example-8">
 	<p><a href="https://unsplash.it/1200/768?image=260" data-toggle="lightbox" data-type="image">Click here for an image, but with no extension.</a></p>
@@ -596,6 +598,15 @@ Obviously, you need Bootstrap (made for Bootstrap 5).
 	<a href="https://getbootstrap.com" data-title="Bootstrap" data-toggle="lightbox">Bootstrap Docs</a>
 </p>
 <div class="markdown" id="example-10"></div>
+
+<div id="custom-html" class="link-anchor"></div>
+<h3>Custom HTML</h3>
+<p>Pass custom HTML into the `data-src` attribute, then add the attribute `data-type="html"`.</p>
+<div data-code="example-11">
+	<p><a href="#" data-src="<div class='text-white'><p>hello darkness my old friend<p></div>" data-type="html" data-title="Custom HTML 2" data-toggle="lightbox" data-gallery="custom-html">Custom HTML 1</a></p>
+	<p><a href="#" data-src="<div class='bg-success'><p>i've come to talk with you again</p></div>" data-type="html" data-title="Custom HTML 1" data-toggle="lightbox" data-gallery="custom-html">Custom HTML 2</a></p>
+</div>
+<div class="markdown" id="example-11"></div>
 
 <div id="contributing" class="link-anchor"></div>
 <h2>Contributing</h2>
