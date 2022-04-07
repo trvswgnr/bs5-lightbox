@@ -26,10 +26,12 @@
     "url": "git+https://github.com/trvswgnr/bs5-lightbox.git"
   },
   "peerDependencies": {
-    "bootstrap": "^5.1.1"
+    "bootstrap": "^5.0.0"
   },
+  "sideEffects": false,
   "scripts": {
-    "build": "tsc && webpack --mode=production",
+    "build": "webpack --mode=production --config webpack.module.js && webpack --mode=production --config webpack.cdn.js",
+    "start": "webpack --watch --mode=production --config webpack.module.js",
     "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
     "lint": "eslint src --ext .js,.ts"
   },
@@ -37,15 +39,19 @@
   "deprecated": false,
   "funding": "https://github.com/sponsors/trvswgnr",
   "devDependencies": {
+    "@babel/core": "^7.17.8",
+    "@babel/preset-env": "^7.16.11",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.33.0",
+    "babel-loader": "^8.2.4",
     "eslint": "^7.32.0",
     "prettier": "^2.4.1",
     "terser-webpack-plugin": "^5.2.4",
     "ts-loader": "^9.2.6",
     "typescript": "^4.4.3",
     "webpack": "^5.56.1",
-    "webpack-cli": "^4.8.0"
+    "webpack-cli": "^4.8.0",
+    "webpack-merge": "^5.8.0"
   },
   "browserslist": [
     ">= 0.5%",

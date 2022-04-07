@@ -5,7 +5,11 @@
  * @module bs5-lightbox
  */
 
-__BOOTSTRAP_IMPORT__;
+import { Modal, Carousel } from 'bootstrap';
+const bootstrap = {
+	Modal,
+	Carousel
+};
 class Lightbox {
 	constructor(el, options = {}) {
 		this.hash = this.randomHash();
@@ -41,7 +45,6 @@ class Lightbox {
 	}
 	getSrc(el) {
 		let src = el.dataset.src || el.dataset.remote || el.href || 'http://via.placeholder.com/1600x900';
-		console.log('el.dataset.type', el.dataset.type);
 		if (el.dataset.type === 'html') {
 			return src;
 		}
@@ -65,8 +68,8 @@ class Lightbox {
 			galleryTarget = this.el.dataset.gallery;
 		}
 		const gallery = galleryTarget
-			? [...new Set(Array.from(document.querySelectorAll(`[data-gallery="${galleryTarget}"]`), (v) => `${v.dataset.type && v.dataset.type !== 'image' ? v.dataset.type : ''}${this.getSrc(v)}`))]
-			: [`${this.type && this.type !== 'image' ? this.type : ''}${this.src}`];
+			? [...new Set(Array.from(document.querySelectorAll(`[data-gallery="${galleryTarget}"]`), (v) => `${v.dataset.type ? v.dataset.type : ''}${this.getSrc(v)}`))]
+			: [`${this.type ? this.type : ''}${this.src}`];
 		return gallery;
 	}
 	getYoutubeId(src) {
@@ -91,9 +94,11 @@ class Lightbox {
 		const types = Lightbox.allowedMediaTypes.join('|');
 		const slidesHtml = this.sources
 			.map((src, i) => {
+				console.log(src);
 				src = src.replace(/\/$/, '');
 				const regex = new RegExp(`^(${types})`, 'i');
 				const isHtml = /^html/.test(src);
+				const isForcedImage = /^image/.test(src);
 				if (regex.test(src)) {
 					src = src.replace(regex, '');
 				}
@@ -101,7 +106,7 @@ class Lightbox {
 				let attributes = '';
 				const instagramEmbed = this.getInstagramEmbed(src);
 				const youtubeId = this.getYoutubeId(src);
-				if (this.isEmbed(src)) {
+				if (this.isEmbed(src) && !isForcedImage) {
 					if (youtubeId) {
 						src = `https://www.youtube.com/embed/${youtubeId}`;
 						attributes = 'title="YouTube video player" frameborder="0" allow="accelerometer autoplay clipboard-write encrypted-media gyroscope picture-in-picture"';
@@ -109,7 +114,6 @@ class Lightbox {
 					inner = instagramEmbed || `<iframe src="${src}" ${attributes} allowfullscreen></iframe>`;
 				}
 				if (isHtml) {
-					console.log('is html');
 					inner = src;
 				}
 				const spinner = `<div class="position-absolute top-50 start-50 translate-middle text-white"><div class="spinner-border" style="width: 3rem height: 3rem" role="status"></div></div>`;
@@ -210,4 +214,7 @@ Lightbox.initialize = function (e) {
 	lightbox.show();
 };
 document.querySelectorAll(Lightbox.defaultSelector).forEach((el) => el.addEventListener('click', Lightbox.initialize));
-__LIGHTBOX_EXPORT__;
+if (typeof window !== 'undefined' && window.bootstrap) {
+	window.bootstrap.Lightbox = Lightbox;
+}
+export default Lightbox;
