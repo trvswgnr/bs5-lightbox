@@ -116,7 +116,8 @@ class Lightbox {
 		}
 		this.settings = Object.assign(Object.assign({}, this.settings), options);
 		this.el = el;
-		this.type = el.dataset.type || 'image';
+		this.type = el.dataset.type || '';
+
 		this.src = this.getSrc(el);
 		this.sources = this.getGalleryItems();
 		this.createCarousel();
@@ -176,6 +177,7 @@ class Lightbox {
 		const regex = new RegExp('(' + Lightbox.allowedEmbedTypes.join('|') + ')');
 		const isEmbed = regex.test(src);
 		const isImg = /\.(png|jpe?g|gif|svg|webp)/i.test(src) || this.el.dataset.type === 'image';
+
 		return isEmbed || !isImg;
 	}
 	createCarousel() {
@@ -183,11 +185,11 @@ class Lightbox {
 		const types = Lightbox.allowedMediaTypes.join('|');
 		const slidesHtml = this.sources
 			.map((src, i) => {
-				console.log(src);
 				src = src.replace(/\/$/, '');
 				const regex = new RegExp(`^(${types})`, 'i');
 				const isHtml = /^html/.test(src);
 				const isForcedImage = /^image/.test(src);
+
 				if (regex.test(src)) {
 					src = src.replace(regex, '');
 				}
@@ -247,7 +249,7 @@ class Lightbox {
 		const carouselOptions = Object.assign(Object.assign({}, this.carouselOptions), { keyboard: false });
 		this.carousel = new bootstrap.Carousel(this.carouselElement, carouselOptions);
 		const elSrc = this.type && this.type !== 'image' ? this.type + this.src : this.src;
-		this.carousel.to(this.sources.includes(elSrc) ? this.sources.indexOf(elSrc) : 0);
+		this.carousel.to(this.findGalleryItemIndex(this.sources, elSrc));
 		if (this.carouselOptions.keyboard === true) {
 			document.addEventListener('keydown', (e) => {
 				if (e.code === 'ArrowLeft') {
@@ -267,6 +269,16 @@ class Lightbox {
 			});
 		}
 		return this.carousel;
+	}
+	findGalleryItemIndex(haystack, needle) {
+		let index = 0;
+		for (const item of haystack) {
+			if (item.includes(needle)) {
+				return index;
+			}
+			index++;
+		}
+		return 0;
 	}
 	createModal() {
 		const template = document.createElement('template');
