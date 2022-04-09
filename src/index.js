@@ -17,7 +17,8 @@ class Lightbox {
 			interval: false,
 			target: '[data-toggle="lightbox"]',
 			gallery: '',
-			size: 'xl'
+			size: 'xl',
+			constrain: true
 		});
 		this.modalOptions = (() => this.setOptionsFromSettings(bootstrap.Modal.Default))();
 		this.carouselOptions = (() => this.setOptionsFromSettings(bootstrap.Carousel.Default))();
@@ -104,7 +105,8 @@ class Lightbox {
 				if (regex.test(src)) {
 					src = src.replace(regex, '');
 				}
-				let inner = `<img src="${src}" class="d-block w-100 h-100 img-fluid" style="z-index: 1; object-fit: contain;" />`;
+				const imgClasses = this.settings.constrain ? 'mw-100 mh-100 h-auto w-auto m-auto top-0 end-0 bottom-0 start-0' : 'h-100 w-100';
+				let inner = `<img src="${src}" class="d-block ${imgClasses} img-fluid" style="z-index: 1; object-fit: contain;" />`;
 				let attributes = '';
 				const instagramEmbed = this.getInstagramEmbed(src);
 				const youtubeId = this.getYoutubeId(src);
