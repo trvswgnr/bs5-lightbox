@@ -311,6 +311,9 @@
 						<li class="nav-item">
 							<a class="nav-link" href="#installation">Installation</a>
 						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#options">Options</a>
+						</li>
 						<li class="nav-item dropdown">
 							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 								Examples
@@ -363,6 +366,7 @@
 		<div class="col-md-3">
 			<ul class="list-group sticky-top d-none d-md-flex" id="main-nav">
 				<li class="list-group-item"><a href="#installation">Installation</a></li>
+				<li class="list-group-item"><a href="#options">Options</a></li>
 				<li class="list-group-item"><a href="#examples-nav" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="examples-nav"><span class="dropdown-toggle"></span>Examples</span></a></li>
 				<ul class="list-group-item list-group list-group-flush p-0 collapse" id="examples-nav">
 					<li class="list-group-item"><a href="#single-image">Single Image</a></li>
@@ -422,6 +426,48 @@ document.querySelectorAll('.my-lightbox-toggle').forEach((el) => el.addEventList
 
 Obviously, you need Bootstrap (made for Bootstrap 5).
 </div>
+
+<div id="options" class="link-anchor"></div>
+<h2>Options</h2>
+
+<p>Lightbox for Bootstrap 5 accepts all of the options that Bootstrap's Modal and Carousel classes accept, with a few additions.</p>
+
+<table class="table">
+	<thead>
+	  <tr>
+		<th style="width: 100px;">Name</th>
+		<th style="width: 50px;">Type</th>
+		<th style="width: 50px;">Default</th>
+		<th>Description</th>
+	  </tr>
+	</thead>
+	<tbody>
+	  <tr>
+		<td><code>target</code></td>
+		<td>string (valid CSS selector)</td>
+		<td><code>'[data-toggle="lightbox"]'</code></td>
+		<td>The target element selector to trigger lightbox events</td>
+	  </tr>
+	  <tr>
+		<td><code>gallery</code></td>
+		<td>array | string</td>
+		<td><code>''</code></td>
+		<td>Optional gallery of elements or string containing gallery name</td>
+	  </tr>
+	  <tr>
+		<td><code>size</code></td>
+		<td>'default' | 'sm' | 'lg' | 'xl' | 'fullscreen'</td>
+		<td><code>'xl'</code></td>
+		<td>Size of lightbox</td>
+	  </tr>
+	  <tr>
+		<td><code>constrain</code></td>
+		<td>boolean</td>
+		<td><code>true</code></td>
+		<td>Don't allow images to be larger than their original size</td>
+	  </tr>
+	</tbody>
+</table>
 
 <div id="examples" class="link-anchor"></div>
 <h2>Examples</h2>
