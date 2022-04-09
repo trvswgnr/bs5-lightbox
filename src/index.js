@@ -104,7 +104,7 @@ class Lightbox {
 				if (regex.test(src)) {
 					src = src.replace(regex, '');
 				}
-				let inner = `<img src="${src}" class="d-block w-100 h-100 img-fluid" style="z-index: 1; object-fit: contain;" />`;
+				let inner = `<img src="${src}" class="d-block mw-100 mh-100 h-auto w-auto m-auto top-0 end-0 bottom-0 start-0 img-fluid" style="z-index: 1; object-fit: contain;" />`;
 				let attributes = '';
 				const instagramEmbed = this.getInstagramEmbed(src);
 				const youtubeId = this.getYoutubeId(src);
