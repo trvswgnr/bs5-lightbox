@@ -1,9 +1,11 @@
 const { merge } = require('webpack-merge');
 const common = require('./webpack.common.js');
+const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = merge(common, {
 	optimization: {
-		minimize: false
+		minimize: true,
+		minimizer: [new TerserPlugin({ extractComments: false })]
 	},
 	target: ['web', 'es5'],
 	module: {
@@ -18,7 +20,7 @@ module.exports = merge(common, {
 	output: {
 		filename: 'index.bundle.min.js',
 		library: {
-			name: 'Bootstrap5Lightbox',
+			name: 'Lightbox',
 			type: 'window',
 			export: 'default'
 		}
