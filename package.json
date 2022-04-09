@@ -20,6 +20,7 @@
   ],
   "license": "MIT",
   "main": "dist/index.js",
+  "module": "src/index.js",
   "jsdelivr": "dist/index.bundle.min.js",
   "repository": {
     "type": "git",
@@ -36,7 +37,6 @@
     "lint": "eslint src --ext .js,.ts"
   },
   "bundleDependencies": false,
-  "deprecated": false,
   "funding": "https://github.com/sponsors/trvswgnr",
   "devDependencies": {
     "@babel/core": "^7.17.8",
@@ -65,6 +65,8 @@
     "not Explorer <= 11"
   ],
   "files": [
-    "dist/**/*"
-  ]
+    "dist/**/*",
+    "src/**/*"
+  ],
+  "dependencies": {}
 }
