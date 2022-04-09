@@ -3,12 +3,13 @@ const common = require('./webpack.common.js');
 
 module.exports = merge(common, {
 	optimization: {
-		minimize: false
+		minimize: true,
+		usedExports: true
 	},
 	output: {
 		filename: 'index.js',
 		library: {
-			name: 'Bootstrap5Lightbox',
+			name: 'Lightbox',
 			type: 'umd',
 			umdNamedDefine: true,
 			export: 'default'
