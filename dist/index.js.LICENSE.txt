@@ -1,4 +1,28 @@
 /*!
+  * Bootstrap base-component.js v5.1.1 (https://getbootstrap.com/)
+  * Copyright 2011-2021 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
+  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
+  */
+
+/*!
+  * Bootstrap data.js v5.1.1 (https://getbootstrap.com/)
+  * Copyright 2011-2021 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
+  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
+  */
+
+/*!
+  * Bootstrap event-handler.js v5.1.1 (https://getbootstrap.com/)
+  * Copyright 2011-2021 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
+  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
+  */
+
+/*!
+  * Bootstrap selector-engine.js v5.1.1 (https://getbootstrap.com/)
+  * Copyright 2011-2021 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
+  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
+  */
+
+/*!
  * Lightbox for Bootstrap 5 v1.8.0 (https://trvswgnr.github.io/bs5-lightbox/)
  * Copyright 2022 Travis Aaron Wagner (https://github.com/trvswgnr/)
  * Licensed under MIT (https://github.com/trvswgnr/bs5-lightbox/blob/main/LICENSE)

@@ -1,234 +1,370 @@
 /**
- * Lightbox for Bootstrap 5
- *
- * @file Creates a modal with a lightbox carousel.
- * @module bs5-lightbox
+ * --------------------------------------------------------------------------
+ * Bootstrap (v5.1.3): modal.js
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
+ * --------------------------------------------------------------------------
  */
 
-import { Modal, Carousel } from 'bootstrap';
-const bootstrap = {
-	Modal,
-	Carousel
+import { defineJQueryPlugin, getElementFromSelector, isRTL, isVisible, reflow } from 'bootstrap/js/src/util/index';
+import EventHandler from 'bootstrap/js/dist/dom/event-handler';
+import SelectorEngine from 'bootstrap/js/dist/dom/selector-engine';
+import ScrollBarHelper from 'bootstrap/js/src/util/scrollbar';
+import BaseComponent from 'bootstrap/js/dist/base-component';
+import Backdrop from 'bootstrap/js/src/util/backdrop';
+import FocusTrap from 'bootstrap/js/src/util/focustrap';
+import { enableDismissTrigger } from 'bootstrap/js/src/util/component-functions';
+
+/**
+ * Constants
+ */
+
+const NAME = 'modal';
+const DATA_KEY = 'bs.modal';
+const EVENT_KEY = `.${DATA_KEY}`;
+const DATA_API_KEY = '.data-api';
+const ESCAPE_KEY = 'Escape';
+
+const EVENT_HIDE = `hide${EVENT_KEY}`;
+const EVENT_HIDE_PREVENTED = `hidePrevented${EVENT_KEY}`;
+const EVENT_HIDDEN = `hidden${EVENT_KEY}`;
+const EVENT_SHOW = `show${EVENT_KEY}`;
+const EVENT_SHOWN = `shown${EVENT_KEY}`;
+const EVENT_RESIZE = `resize${EVENT_KEY}`;
+const EVENT_KEYDOWN_DISMISS = `keydown.dismiss${EVENT_KEY}`;
+const EVENT_CLICK_DATA_API = `click${EVENT_KEY}${DATA_API_KEY}`;
+
+const CLASS_NAME_OPEN = 'modal-open';
+const CLASS_NAME_FADE = 'fade';
+const CLASS_NAME_SHOW = 'show';
+const CLASS_NAME_STATIC = 'modal-static';
+
+const OPEN_SELECTOR = '.modal.show';
+const SELECTOR_DIALOG = '.modal-dialog';
+const SELECTOR_MODAL_BODY = '.modal-body';
+const SELECTOR_DATA_TOGGLE = '[data-bs-toggle="modal"]';
+
+const Default = {
+	backdrop: true,
+	keyboard: true,
+	focus: true
 };
-class Lightbox {
-	constructor(el, options = {}) {
-		this.hash = this.randomHash();
-		this.settings = Object.assign(Object.assign(Object.assign({}, bootstrap.Modal.Default), bootstrap.Carousel.Default), {
-			interval: false,
-			target: '[data-toggle="lightbox"]',
-			gallery: '',
-			size: 'xl',
-			constrain: true
+
+const DefaultType = {
+	backdrop: '(boolean|string)',
+	keyboard: 'boolean',
+	focus: 'boolean'
+};
+
+/**
+ * Class definition
+ */
+
+class Modal extends BaseComponent {
+	constructor(element, config) {
+		super(element, config);
+
+		this._dialog = SelectorEngine.findOne(SELECTOR_DIALOG, this._element);
+		this._backdrop = this._initializeBackDrop();
+		this._focustrap = this._initializeFocusTrap();
+		this._isShown = false;
+		this._isTransitioning = false;
+		this._scrollBar = new ScrollBarHelper();
+		this._config = config;
+		this._addEventListeners();
+	}
+
+	// Getters
+	static get Default() {
+		return Default;
+	}
+
+	static get DefaultType() {
+		return DefaultType;
+	}
+
+	static get NAME() {
+		return NAME;
+	}
+
+	// Public
+	toggle(relatedTarget) {
+		return this._isShown ? this.hide() : this.show(relatedTarget);
+	}
+
+	show(relatedTarget) {
+		if (this._isShown || this._isTransitioning) {
+			return;
+		}
+
+		const showEvent = EventHandler.trigger(this._element, EVENT_SHOW, {
+			relatedTarget
 		});
-		this.modalOptions = (() => this.setOptionsFromSettings(bootstrap.Modal.Default))();
-		this.carouselOptions = (() => this.setOptionsFromSettings(bootstrap.Carousel.Default))();
-		if (typeof el === 'string') {
-			this.settings.target = el;
-			el = document.querySelector(this.settings.target);
-		}
-		this.settings = Object.assign(Object.assign({}, this.settings), options);
-		this.el = el;
-		this.type = el.dataset.type || '';
 
-		this.src = this.getSrc(el);
-		this.sources = this.getGalleryItems();
-		this.createCarousel();
-		this.createModal();
+		if (showEvent.defaultPrevented) {
+			return;
+		}
+
+		this._isShown = true;
+		this._isTransitioning = true;
+
+		this._scrollBar.hide();
+
+		document.body.classList.add(CLASS_NAME_OPEN);
+
+		this._adjustDialog();
+
+		this._backdrop.show(() => this._showElement(relatedTarget));
 	}
-	show() {
-		document.body.appendChild(this.modalElement);
-		this.modal.show();
-	}
+
 	hide() {
-		this.modal.hide();
-	}
-	setOptionsFromSettings(obj) {
-		return Object.keys(obj).reduce((p, c) => Object.assign(p, { [c]: this.settings[c] }), {});
-	}
-	getSrc(el) {
-		let src = el.dataset.src || el.dataset.remote || el.href || 'http://via.placeholder.com/1600x900';
-		if (el.dataset.type === 'html') {
-			return src;
+		if (!this._isShown || this._isTransitioning) {
+			return;
 		}
-		if (!/\:\/\//.test(src)) {
-			src = window.location.origin + src;
+
+		const hideEvent = EventHandler.trigger(this._element, EVENT_HIDE);
+
+		if (hideEvent.defaultPrevented) {
+			return;
 		}
-		const url = new URL(src);
-		if (el.dataset.footer || el.dataset.caption) {
-			url.searchParams.set('caption', el.dataset.footer || el.dataset.caption);
-		}
-		return url.toString();
+
+		this._isShown = false;
+		this._isTransitioning = true;
+		this._focustrap.deactivate();
+
+		this._element.classList.remove(CLASS_NAME_SHOW);
+
+		this._queueCallback(() => this._hideModal(), this._element, this._isAnimated());
 	}
-	getGalleryItems() {
-		let galleryTarget;
-		if (this.settings.gallery) {
-			if (Array.isArray(this.settings.gallery)) {
-				return this.settings.gallery;
+
+	dispose() {
+		for (const htmlElement of [window, this._dialog]) {
+			EventHandler.off(htmlElement, EVENT_KEY);
+		}
+
+		this._backdrop.dispose();
+		this._focustrap.deactivate();
+		super.dispose();
+	}
+
+	handleUpdate() {
+		this._adjustDialog();
+	}
+
+	// Private
+	_initializeBackDrop() {
+		const clickCallback = () => {
+			if (this._config.backdrop === 'static') {
+				this._triggerBackdropTransition();
+				return;
 			}
-			galleryTarget = this.settings.gallery;
-		} else if (this.el.dataset.gallery) {
-			galleryTarget = this.el.dataset.gallery;
-		}
-		const gallery = galleryTarget
-			? [...new Set(Array.from(document.querySelectorAll(`[data-gallery="${galleryTarget}"]`), (v) => `${v.dataset.type ? v.dataset.type : ''}${this.getSrc(v)}`))]
-			: [`${this.type ? this.type : ''}${this.src}`];
-		return gallery;
-	}
-	getYoutubeId(src) {
-		if (!src) return false;
-		const matches = src.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/);
-		return matches && matches[2].length === 11 ? matches[2] : false;
-	}
-	getInstagramEmbed(src) {
-		if (/instagram/.test(src)) {
-			src += /\/embed$/.test(src) ? '' : '/embed';
-			return `<iframe src="${src}" class="start-50 translate-middle-x" style="max-width: 500px" frameborder="0" scrolling="no" allowtransparency="true"></iframe>`;
-		}
-	}
-	isEmbed(src) {
-		const regex = new RegExp('(' + Lightbox.allowedEmbedTypes.join('|') + ')');
-		const isEmbed = regex.test(src);
-		const isImg = /\.(png|jpe?g|gif|svg|webp)/i.test(src) || this.el.dataset.type === 'image';
 
-		return isEmbed || !isImg;
-	}
-	createCarousel() {
-		const template = document.createElement('template');
-		const types = Lightbox.allowedMediaTypes.join('|');
-		const slidesHtml = this.sources
-			.map((src, i) => {
-				src = src.replace(/\/$/, '');
-				const regex = new RegExp(`^(${types})`, 'i');
-				const isHtml = /^html/.test(src);
-				const isForcedImage = /^image/.test(src);
+			this.hide();
+		};
 
-				if (regex.test(src)) {
-					src = src.replace(regex, '');
-				}
-				const imgClasses = this.settings.constrain ? 'mw-100 mh-100 h-auto w-auto m-auto top-0 end-0 bottom-0 start-0' : 'h-100 w-100';
-				let inner = `<img src="${src}" class="d-block ${imgClasses} img-fluid" style="z-index: 1; object-fit: contain;" />`;
-				let attributes = '';
-				const instagramEmbed = this.getInstagramEmbed(src);
-				const youtubeId = this.getYoutubeId(src);
-				if (this.isEmbed(src) && !isForcedImage) {
-					if (youtubeId) {
-						src = `https://www.youtube.com/embed/${youtubeId}`;
-						attributes = 'title="YouTube video player" frameborder="0" allow="accelerometer autoplay clipboard-write encrypted-media gyroscope picture-in-picture"';
-					}
-					inner = instagramEmbed || `<iframe src="${src}" ${attributes} allowfullscreen></iframe>`;
-				}
-				if (isHtml) {
-					inner = src;
-				}
-				const spinner = `<div class="position-absolute top-50 start-50 translate-middle text-white"><div class="spinner-border" style="width: 3rem height: 3rem" role="status"></div></div>`;
-				const params = new URLSearchParams(src.split('?')[1]);
-				let caption = '';
-				if (params.get('caption')) {
-					caption = `<p class="lightbox-caption m-0 p-2 text-center text-white small"><em>${params.get('caption')}</em></p>`;
-				}
-				return `
-				<div class="carousel-item ${!i ? 'active' : ''}" style="min-height: 100px">
-					${spinner}
-					<div class="ratio ratio-16x9" style="background-color: #000;">${inner}</div>
-					${caption}
-				</div>`;
-			})
-			.join('');
-		const controlsHtml =
-			this.sources.length < 2
-				? ''
-				: `
-			<button id="#lightboxCarousel-${this.hash}-prev" class="carousel-control carousel-control-prev h-75 m-auto" type="button" data-bs-target="#lightboxCarousel-${this.hash}" data-bs-slide="prev">
-				<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-				<span class="visually-hidden">Previous</span>
-			</button>
-			<button id="#lightboxCarousel-${this.hash}-next" class="carousel-control carousel-control-next h-75 m-auto" type="button" data-bs-target="#lightboxCarousel-${this.hash}" data-bs-slide="next">
-				<span class="carousel-control-next-icon" aria-hidden="true"></span>
-				<span class="visually-hidden">Next</span>
-			</button>`;
-		let classes = 'lightbox-carousel carousel';
-		if (this.settings.size === 'fullscreen') {
-			classes += ' position-absolute w-100 translate-middle top-50 start-50';
+		// 'static' option will be translated to true, and booleans will keep their value
+		const isVisible = Boolean(this._config.backdrop);
+
+		return new Backdrop({
+			isVisible,
+			isAnimated: this._isAnimated(),
+			clickCallback: isVisible ? clickCallback : null
+		});
+	}
+
+	_initializeFocusTrap() {
+		return new FocusTrap({
+			trapElement: this._element
+		});
+	}
+
+	_showElement(relatedTarget) {
+		// try to append dynamic modal
+		if (!document.body.contains(this._element)) {
+			document.body.append(this._element);
 		}
-		const html = `
-			<div id="lightboxCarousel-${this.hash}" class="${classes}" data-bs-ride="carousel" data-bs-interval="${this.carouselOptions.interval}">
-				<div class="carousel-inner">
-					${slidesHtml}
-				</div>
-				${controlsHtml}
-			</div>`;
-		template.innerHTML = html.trim();
-		this.carouselElement = template.content.firstChild;
-		const carouselOptions = Object.assign(Object.assign({}, this.carouselOptions), { keyboard: false });
-		this.carousel = new bootstrap.Carousel(this.carouselElement, carouselOptions);
-		const elSrc = this.type && this.type !== 'image' ? this.type + this.src : this.src;
-		this.carousel.to(this.findGalleryItemIndex(this.sources, elSrc));
-		if (this.carouselOptions.keyboard === true) {
-			document.addEventListener('keydown', (e) => {
-				if (e.code === 'ArrowLeft') {
-					const prev = document.getElementById(`#lightboxCarousel-${this.hash}-prev`);
-					if (prev) {
-						prev.click();
-					}
-					return false;
-				}
-				if (e.code === 'ArrowRight') {
-					const next = document.getElementById(`#lightboxCarousel-${this.hash}-next`);
-					if (next) {
-						next.click();
-					}
-					return false;
-				}
+
+		this._element.style.display = 'block';
+		this._element.removeAttribute('aria-hidden');
+		this._element.setAttribute('aria-modal', true);
+		this._element.setAttribute('role', 'dialog');
+		this._element.scrollTop = 0;
+
+		const modalBody = SelectorEngine.findOne(SELECTOR_MODAL_BODY, this._dialog);
+		if (modalBody) {
+			modalBody.scrollTop = 0;
+		}
+
+		reflow(this._element);
+
+		this._element.classList.add(CLASS_NAME_SHOW);
+
+		const transitionComplete = () => {
+			if (this._config.focus) {
+				this._focustrap.activate();
+			}
+
+			this._isTransitioning = false;
+			EventHandler.trigger(this._element, EVENT_SHOWN, {
+				relatedTarget
 			});
-		}
-		return this.carousel;
+		};
+
+		this._queueCallback(transitionComplete, this._dialog, this._isAnimated());
 	}
-	findGalleryItemIndex(haystack, needle) {
-		let index = 0;
-		for (const item of haystack) {
-			if (item.includes(needle)) {
-				return index;
+
+	_addEventListeners() {
+		EventHandler.on(this._element, EVENT_KEYDOWN_DISMISS, (event) => {
+			if (event.key !== ESCAPE_KEY) {
+				return;
 			}
-			index++;
+
+			if (this._config.keyboard) {
+				event.preventDefault();
+				this.hide();
+				return;
+			}
+
+			this._triggerBackdropTransition();
+		});
+
+		EventHandler.on(window, EVENT_RESIZE, () => {
+			if (this._isShown && !this._isTransitioning) {
+				this._adjustDialog();
+			}
+		});
+	}
+
+	_hideModal() {
+		this._element.style.display = 'none';
+		this._element.setAttribute('aria-hidden', true);
+		this._element.removeAttribute('aria-modal');
+		this._element.removeAttribute('role');
+		this._isTransitioning = false;
+
+		this._backdrop.hide(() => {
+			document.body.classList.remove(CLASS_NAME_OPEN);
+			this._resetAdjustments();
+			this._scrollBar.reset();
+			EventHandler.trigger(this._element, EVENT_HIDDEN);
+		});
+	}
+
+	_isAnimated() {
+		return this._element.classList.contains(CLASS_NAME_FADE);
+	}
+
+	_triggerBackdropTransition() {
+		const hideEvent = EventHandler.trigger(this._element, EVENT_HIDE_PREVENTED);
+		if (hideEvent.defaultPrevented) {
+			return;
 		}
-		return 0;
+
+		const isModalOverflowing = this._element.scrollHeight > document.documentElement.clientHeight;
+		const initialOverflowY = this._element.style.overflowY;
+		// return if the following background transition hasn't yet completed
+		if (initialOverflowY === 'hidden' || this._element.classList.contains(CLASS_NAME_STATIC)) {
+			return;
+		}
+
+		if (!isModalOverflowing) {
+			this._element.style.overflowY = 'hidden';
+		}
+
+		this._element.classList.add(CLASS_NAME_STATIC);
+		this._queueCallback(() => {
+			this._element.classList.remove(CLASS_NAME_STATIC);
+			this._queueCallback(() => {
+				this._element.style.overflowY = initialOverflowY;
+			}, this._dialog);
+		}, this._dialog);
+
+		this._element.focus();
 	}
-	createModal() {
-		const template = document.createElement('template');
-		const btnInner =
-			'<svg xmlns="http://www.w3.org/2000/svg" style="position: relative; top: -5px;" viewBox="0 0 16 16" fill="#fff"><path d="M.293.293a1 1 0 011.414 0L8 6.586 14.293.293a1 1 0 111.414 1.414L9.414 8l6.293 6.293a1 1 0 01-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 01-1.414-1.414L6.586 8 .293 1.707a1 1 0 010-1.414z"/></svg>';
-		const html = `
-			<div class="modal lightbox fade" id="lightboxModal-${this.hash}" tabindex="-1" aria-hidden="true">
-				<div class="modal-dialog modal-dialog-centered modal-${this.settings.size}">
-					<div class="modal-content border-0 bg-transparent">
-						<div class="modal-body p-0">
-							<button type="button" class="btn-close position-absolute top-0 end-0 p-3" data-bs-dismiss="modal" aria-label="Close" style="z-index: 2; background: none;">${btnInner}</button>
-						</div>
-					</div>
-				</div>
-			</div>`;
-		template.innerHTML = html.trim();
-		this.modalElement = template.content.firstChild;
-		this.modalElement.querySelector('.modal-body').appendChild(this.carouselElement);
-		this.modalElement.addEventListener('hidden.bs.modal', () => this.modalElement.remove());
-		this.modalElement.querySelector('[data-bs-dismiss]').addEventListener('click', () => this.modal.hide());
-		this.modal = new bootstrap.Modal(this.modalElement, this.modalOptions);
-		return this.modal;
+
+	/**
+	 * The following methods are used to handle overflowing modals
+	 */
+
+	_adjustDialog() {
+		const isModalOverflowing = this._element.scrollHeight > document.documentElement.clientHeight;
+		const scrollbarWidth = this._scrollBar.getWidth();
+		const isBodyOverflowing = scrollbarWidth > 0;
+
+		if (isBodyOverflowing && !isModalOverflowing) {
+			const property = isRTL() ? 'paddingLeft' : 'paddingRight';
+			this._element.style[property] = `${scrollbarWidth}px`;
+		}
+
+		if (!isBodyOverflowing && isModalOverflowing) {
+			const property = isRTL() ? 'paddingRight' : 'paddingLeft';
+			this._element.style[property] = `${scrollbarWidth}px`;
+		}
 	}
-	randomHash(length = 8) {
-		return Array.from({ length }, () => Math.floor(Math.random() * 36).toString(36)).join('');
+
+	_resetAdjustments() {
+		this._element.style.paddingLeft = '';
+		this._element.style.paddingRight = '';
+	}
+
+	// Static
+	static jQueryInterface(config, relatedTarget) {
+		return this.each(function () {
+			const data = Modal.getOrCreateInstance(this, config);
+
+			if (typeof config !== 'string') {
+				return;
+			}
+
+			if (typeof data[config] === 'undefined') {
+				throw new TypeError(`No method named "${config}"`);
+			}
+
+			data[config](relatedTarget);
+		});
 	}
 }
-Lightbox.allowedEmbedTypes = ['embed', 'youtube', 'vimeo', 'instagram', 'url'];
-Lightbox.allowedMediaTypes = [...Lightbox.allowedEmbedTypes, 'image', 'html'];
-Lightbox.defaultSelector = '[data-toggle="lightbox"]';
-Lightbox.initialize = function (e) {
-	e.preventDefault();
-	const lightbox = new Lightbox(this);
-	lightbox.show();
-};
-document.querySelectorAll(Lightbox.defaultSelector).forEach((el) => el.addEventListener('click', Lightbox.initialize));
-if (typeof window !== 'undefined' && window.bootstrap) {
-	window.bootstrap.Lightbox = Lightbox;
-}
-export default Lightbox;
+
+/**
+ * Data API implementation
+ */
+
+EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_TOGGLE, function (event) {
+	const target = getElementFromSelector(this);
+
+	if (['A', 'AREA'].includes(this.tagName)) {
+		event.preventDefault();
+	}
+
+	EventHandler.one(target, EVENT_SHOW, (showEvent) => {
+		if (showEvent.defaultPrevented) {
+			// only register focus restorer if modal will actually get shown
+			return;
+		}
+
+		EventHandler.one(target, EVENT_HIDDEN, () => {
+			if (isVisible(this)) {
+				this.focus();
+			}
+		});
+	});
+
+	// avoid conflict when clicking modal toggler while another one is open
+	const alreadyOpen = SelectorEngine.findOne(OPEN_SELECTOR);
+	if (alreadyOpen) {
+		Modal.getInstance(alreadyOpen).hide();
+	}
+
+	const data = Modal.getOrCreateInstance(target);
+
+	data.toggle(this);
+});
+
+enableDismissTrigger(Modal);
+
+/**
+ * jQuery
+ */
+
+defineJQueryPlugin(Modal);
+
+export default Modal;
