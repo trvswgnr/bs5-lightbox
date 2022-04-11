@@ -35,7 +35,7 @@ Lightbox for Bootstrap 5 will automatically initialize on import:
 ```js
 import 'bs5-lightbox'
 ```
-By default it will target elements with the `data-toggle-"lightbox"` attribute.
+By default it will target elements with the `data-toggle="lightbox"` attribute.
 
 If you want to target a different element, import the `Lightbox` class and instantiate it:
 ```js
