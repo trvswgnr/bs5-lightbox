@@ -410,7 +410,7 @@ $ npm i bs5-lightbox
 
 __**`index.js`**__
 ```js
-import 'bs5-lightbox'
+import 'bs5-lightbox';
 ```
 
 Or grab the latest JS from the CDN and add it after Bootstrap's JS:
@@ -431,7 +431,7 @@ If you want to target a different element, import the Lightbox class and instant
 
 __**`index.js`**__
 ```js
-import Lightbox from 'bs5-lightbox'
+import Lightbox from 'bs5-lightbox';
 
 document.querySelectorAll('.my-lightbox-toggle').forEach(el => el.addEventListener('click', Lightbox.initialize));
 ```
@@ -481,6 +481,23 @@ Obviously, you need Bootstrap (made for Bootstrap 5).
 	</tbody>
 </table>
 
+<p>Pass options as an object to the second parameter when creating an instance of the lightbox.</p>
+<div class="markdown">
+__**`index.js`**__
+```js
+import Lightbox from 'bs5-lightbox';
+
+const options = {
+	keyboard: true,
+	size: 'fullscreen'
+};
+document.querySelectorAll('.my-lightbox-toggle').forEach((el) => el.addEventListener('click', (e) => {
+	e.preventDefault();
+	const lightbox = new Lightbox(el, options);
+	lightbox.show();
+}));
+```
+</div>
 <div id="examples" class="link-anchor"></div>
 <h2>Examples</h2>
 <p><em>Thanks to <a href="https://unsplash.it/">https://unsplash.it/</a> for the images.</em></p>
