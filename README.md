@@ -41,16 +41,12 @@ If you want to target a different element, import the `Lightbox` class and insta
 ```js
 import Lightbox from 'bs5-lightbox'
 
-document.querySelectorAll('.my-lightbox-toggle').forEach((el) => el.addEventListener('click', (e) => {
-	e.preventDefault();
-	const lightbox = new Lightbox(el);
-	lightbox.show();
-}));
+document.querySelectorAll('.my-lightbox-toggle').forEach(el => el.addEventListener('click', Lightbox.initialize));
 ```
 
 ## Contributing
-Lightbox for Bootstrap 5 is written in TypeScript and compiled to pure JavaScript.
-Modify the src/index.ts file, run `npm run build` and create a pull request.
+Lightbox for Bootstrap 5 is written in pure JavaScript.
+Modify the src/index.js file, run `npm run build` and create a pull request.
 
 You can help make this project even better and keep it up to date by making a small contribution! [Fund this project](https://github.com/sponsors/trvswgnr).
 
