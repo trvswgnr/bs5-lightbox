@@ -10,7 +10,7 @@ Documentation: https://trvswgnr.github.io/bs5-lightbox/
 
 ### Development on [Version 2](https://github.com/trvswgnr/bs5-lightbox/tree/full-rework) has started!
 
-Use [Issues](https://github.com/trvswgnr/bs5-lightbox/issues) to request new features. If you would like to contribute, send me an email at [lightbox@travisaw.com](lightbox@travisaw.com) or see .
+Use [Issues](https://github.com/trvswgnr/bs5-lightbox/issues) to request new features. If you would like to contribute, send me an email at [lightbox@travisaw.com](lightbox@travisaw.com) or see.
 
 ## Status
 [![github latest release](https://badgen.net/github/tag/trvswgnr/bs5-lightbox?label=release&cache=600)](https://github.com/trvswgnr/bs5-lightbox/releases/latest)
