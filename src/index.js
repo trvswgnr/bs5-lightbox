@@ -1,25 +1,14 @@
-/**
- * --------------------------------------------------------------------------
- * Bootstrap (v5.1.3): modal.js
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
- * --------------------------------------------------------------------------
- */
-
-import { defineJQueryPlugin, getElementFromSelector, isRTL, isVisible, reflow } from 'bootstrap/js/src/util/index';
+import { defineJQueryPlugin, getElementFromSelector, isRTL, isVisible, reflow, typeCheckConfig } from 'bootstrap/js/src/util/index';
 import EventHandler from 'bootstrap/js/dist/dom/event-handler';
+import Manipulator from 'bootstrap/js/src/dom/manipulator';
 import SelectorEngine from 'bootstrap/js/dist/dom/selector-engine';
-import ScrollBarHelper from 'bootstrap/js/src/util/scrollbar';
-import BaseComponent from 'bootstrap/js/dist/base-component';
-import Backdrop from 'bootstrap/js/src/util/backdrop';
+import BaseComponent from 'bootstrap/js/src/base-component';
 import FocusTrap from 'bootstrap/js/src/util/focustrap';
 import { enableDismissTrigger } from 'bootstrap/js/src/util/component-functions';
+import { Modal, Carousel } from 'bootstrap';
 
-/**
- * Constants
- */
-
-const NAME = 'modal';
-const DATA_KEY = 'bs.modal';
+const NAME = 'lightbox';
+const DATA_KEY = `bs.${NAME}`;
 const EVENT_KEY = `.${DATA_KEY}`;
 const DATA_API_KEY = '.data-api';
 const ESCAPE_KEY = 'Escape';
@@ -33,283 +22,153 @@ const EVENT_RESIZE = `resize${EVENT_KEY}`;
 const EVENT_KEYDOWN_DISMISS = `keydown.dismiss${EVENT_KEY}`;
 const EVENT_CLICK_DATA_API = `click${EVENT_KEY}${DATA_API_KEY}`;
 
-const CLASS_NAME_OPEN = 'modal-open';
-const CLASS_NAME_FADE = 'fade';
-const CLASS_NAME_SHOW = 'show';
-const CLASS_NAME_STATIC = 'modal-static';
+const CLASS_NAME_OPEN = `${NAME}-open`;
 
-const OPEN_SELECTOR = '.modal.show';
-const SELECTOR_DIALOG = '.modal-dialog';
-const SELECTOR_MODAL_BODY = '.modal-body';
-const SELECTOR_DATA_TOGGLE = '[data-bs-toggle="modal"]';
+const OPEN_SELECTOR = `.${NAME}.show`;
+const SELECTOR_DATA_TOGGLE = `[data-bs-toggle="${NAME}"]`;
 
-const Default = {
-	backdrop: true,
-	keyboard: true,
-	focus: true
+const BS_MODAL_EVENTS = ['show.bs.modal', 'shown.bs.modal', 'hide.bs.modal', 'hidden.bs.modal', 'hidePrevented.bs.modal'];
+const BS_CAROUSEL_EVENTS = ['slide.bs.carousel', 'slid.bs.carousel'];
+
+const randomHash = (length = 8) => {
+	return 'L' + Array.from({ length }, () => Math.floor(Math.random() * 36).toString(36)).join('');
 };
 
-const DefaultType = {
-	backdrop: '(boolean|string)',
-	keyboard: 'boolean',
-	focus: 'boolean'
+const createModalEl = (modalContent) => {
+	const div = document.createElement('div');
+	div.classList.add('modal', 'fade', 'lightbox');
+	div.id = randomHash();
+	div.innerHTML = `
+		<div class="modal-dialog lightbox-dialog modal-dialog-centered">
+			<div class="modal-content lightbox-content">
+				<div class="modal-header lightbox-header">
+					<h5 class="modal-title lightbox-title" id="${div.id}">Lightbox title</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="lightbox" aria-label="Close"></button>
+				</div>
+				<div class="modal-body lightbox-body"></div>
+				<div class="modal-footer">
+				
+  <button type="button" id="testLightbox2" class="btn btn-secondary" data-bs-toggle="lightbox">
+  Launch demo lightbox2
+</button></div>
+			</div>
+		</div>`;
+	div.querySelector('.lightbox-body').append(modalContent);
+	return div;
 };
 
-/**
- * Class definition
- */
+const createCarouseEl = (slidesData = []) => {
+	const div = document.createElement('div');
+	div.id = randomHash();
+	div.classList.add('carousel', 'slide');
+	div.innerHTML = `
+		<div class="carousel-inner bg-dark text-white">
+			<div class="carousel-item active">
+				<p>Slide 1</p>
+			</div>
+			<div class="carousel-item">
+				<p>Slide 2</p>
+			</div>
+			<div class="carousel-item">
+				<p>Slide 3</p>
+			</div>
+		</div>
+		<button class="carousel-control-prev" type="button" data-bs-target="#${div.id}" data-bs-slide="prev">
+			<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+			<span class="visually-hidden">Previous</span>
+		</button>
+		<button class="carousel-control-next" type="button" data-bs-target="#${div.id}" data-bs-slide="next">
+			<span class="carousel-control-next-icon" aria-hidden="true"></span>
+			<span class="visually-hidden">Next</span>
+		</button>`;
+	return div;
+};
 
-class Modal extends BaseComponent {
+const modalEventsHandler = (element, event) => {
+	const args = Object.fromEntries(Object.getOwnPropertyNames(event).map((prop) => [prop, event[prop]]));
+	delete args.isTrusted;
+	const type = event.type.replace(/(modal|carousel)/, 'lightbox');
+	// const allowedKeys = ['direction', 'relatedTarget', 'from', 'to'];
+	// console.log('event', event);
+	// for (const key in args) console.log(key, args[key]);
+	console.log('initial event', event);
+	EventHandler.trigger(element, type, args);
+};
+
+class Lightbox extends Modal {
 	constructor(element, config) {
-		super(element, config);
-
-		this._dialog = SelectorEngine.findOne(SELECTOR_DIALOG, this._element);
-		this._backdrop = this._initializeBackDrop();
-		this._focustrap = this._initializeFocusTrap();
-		this._isShown = false;
-		this._isTransitioning = false;
-		this._scrollBar = new ScrollBarHelper();
-		this._config = config;
-		this._addEventListeners();
+		const carouselEl = createCarouseEl();
+		new Carousel(carouselEl, {
+			interval: false,
+			ride: false
+		});
+		const modalEl = createModalEl(carouselEl);
+		super(modalEl, config);
+		this.carouselEl = carouselEl;
+		this.modalEl = modalEl;
+		this._setupEventListeners();
 	}
 
-	// Getters
-	static get Default() {
-		return Default;
+	// Public
+
+	// Private
+
+	_setupEventListeners() {
+		const LB_EVENTS = [...BS_MODAL_EVENTS, ...BS_CAROUSEL_EVENTS].map((v) => v.replace(/(modal|carousel)/gi, 'lightbox'));
+		LB_EVENTS.map((eventName) => this._element.addEventListener(eventName, (event) => console.log('lightbox event', event)));
+		BS_MODAL_EVENTS.map((eventName) => this._element.addEventListener(eventName, (event) => modalEventsHandler(this._element, event)));
+		BS_CAROUSEL_EVENTS.map((eventName) => this.carouselEl.addEventListener(eventName, (event) => modalEventsHandler(this._element, event)));
+
+		this._element.addEventListener('hidden.bs.modal', () => {
+			document.body.classList.remove(CLASS_NAME_OPEN);
+			this._element.remove();
+		});
 	}
 
-	static get DefaultType() {
-		return DefaultType;
-	}
+	// Static
 
 	static get NAME() {
 		return NAME;
 	}
 
-	// Public
-	toggle(relatedTarget) {
-		return this._isShown ? this.hide() : this.show(relatedTarget);
+	static get EVENT_CLICK_DATA_API() {
+		return EVENT_CLICK_DATA_API;
 	}
 
-	show(relatedTarget) {
-		if (this._isShown || this._isTransitioning) {
-			return;
+	static initialize(event) {
+		if (['A', 'AREA'].includes(this.tagName)) {
+			event.preventDefault();
 		}
 
-		const showEvent = EventHandler.trigger(this._element, EVENT_SHOW, {
-			relatedTarget
-		});
-
-		if (showEvent.defaultPrevented) {
-			return;
+		// avoid conflict when clicking modal toggler while another one is open
+		const alreadyOpen = SelectorEngine.findOne(OPEN_SELECTOR);
+		if (alreadyOpen) {
+			Lightbox.getInstance(alreadyOpen).hide();
 		}
 
-		this._isShown = true;
-		this._isTransitioning = true;
+		const data = Lightbox.getOrCreateInstance(this);
 
-		this._scrollBar.hide();
+		const target = data.modalEl;
 
-		document.body.classList.add(CLASS_NAME_OPEN);
-
-		this._adjustDialog();
-
-		this._backdrop.show(() => this._showElement(relatedTarget));
-	}
-
-	hide() {
-		if (!this._isShown || this._isTransitioning) {
-			return;
-		}
-
-		const hideEvent = EventHandler.trigger(this._element, EVENT_HIDE);
-
-		if (hideEvent.defaultPrevented) {
-			return;
-		}
-
-		this._isShown = false;
-		this._isTransitioning = true;
-		this._focustrap.deactivate();
-
-		this._element.classList.remove(CLASS_NAME_SHOW);
-
-		this._queueCallback(() => this._hideModal(), this._element, this._isAnimated());
-	}
-
-	dispose() {
-		for (const htmlElement of [window, this._dialog]) {
-			EventHandler.off(htmlElement, EVENT_KEY);
-		}
-
-		this._backdrop.dispose();
-		this._focustrap.deactivate();
-		super.dispose();
-	}
-
-	handleUpdate() {
-		this._adjustDialog();
-	}
-
-	// Private
-	_initializeBackDrop() {
-		const clickCallback = () => {
-			if (this._config.backdrop === 'static') {
-				this._triggerBackdropTransition();
+		EventHandler.one(target, EVENT_SHOW, (showEvent) => {
+			if (showEvent.defaultPrevented) {
+				// only register focus restorer if modal will actually get shown
 				return;
 			}
 
-			this.hide();
-		};
-
-		// 'static' option will be translated to true, and booleans will keep their value
-		const isVisible = Boolean(this._config.backdrop);
-
-		return new Backdrop({
-			isVisible,
-			isAnimated: this._isAnimated(),
-			clickCallback: isVisible ? clickCallback : null
-		});
-	}
-
-	_initializeFocusTrap() {
-		return new FocusTrap({
-			trapElement: this._element
-		});
-	}
-
-	_showElement(relatedTarget) {
-		// try to append dynamic modal
-		if (!document.body.contains(this._element)) {
-			document.body.append(this._element);
-		}
-
-		this._element.style.display = 'block';
-		this._element.removeAttribute('aria-hidden');
-		this._element.setAttribute('aria-modal', true);
-		this._element.setAttribute('role', 'dialog');
-		this._element.scrollTop = 0;
-
-		const modalBody = SelectorEngine.findOne(SELECTOR_MODAL_BODY, this._dialog);
-		if (modalBody) {
-			modalBody.scrollTop = 0;
-		}
-
-		reflow(this._element);
-
-		this._element.classList.add(CLASS_NAME_SHOW);
-
-		const transitionComplete = () => {
-			if (this._config.focus) {
-				this._focustrap.activate();
-			}
-
-			this._isTransitioning = false;
-			EventHandler.trigger(this._element, EVENT_SHOWN, {
-				relatedTarget
+			EventHandler.one(target, EVENT_HIDDEN, () => {
+				if (isVisible(this)) {
+					this.focus();
+				}
 			});
-		};
-
-		this._queueCallback(transitionComplete, this._dialog, this._isAnimated());
-	}
-
-	_addEventListeners() {
-		EventHandler.on(this._element, EVENT_KEYDOWN_DISMISS, (event) => {
-			if (event.key !== ESCAPE_KEY) {
-				return;
-			}
-
-			if (this._config.keyboard) {
-				event.preventDefault();
-				this.hide();
-				return;
-			}
-
-			this._triggerBackdropTransition();
 		});
 
-		EventHandler.on(window, EVENT_RESIZE, () => {
-			if (this._isShown && !this._isTransitioning) {
-				this._adjustDialog();
-			}
-		});
+		data.toggle(this);
 	}
 
-	_hideModal() {
-		this._element.style.display = 'none';
-		this._element.setAttribute('aria-hidden', true);
-		this._element.removeAttribute('aria-modal');
-		this._element.removeAttribute('role');
-		this._isTransitioning = false;
-
-		this._backdrop.hide(() => {
-			document.body.classList.remove(CLASS_NAME_OPEN);
-			this._resetAdjustments();
-			this._scrollBar.reset();
-			EventHandler.trigger(this._element, EVENT_HIDDEN);
-		});
-	}
-
-	_isAnimated() {
-		return this._element.classList.contains(CLASS_NAME_FADE);
-	}
-
-	_triggerBackdropTransition() {
-		const hideEvent = EventHandler.trigger(this._element, EVENT_HIDE_PREVENTED);
-		if (hideEvent.defaultPrevented) {
-			return;
-		}
-
-		const isModalOverflowing = this._element.scrollHeight > document.documentElement.clientHeight;
-		const initialOverflowY = this._element.style.overflowY;
-		// return if the following background transition hasn't yet completed
-		if (initialOverflowY === 'hidden' || this._element.classList.contains(CLASS_NAME_STATIC)) {
-			return;
-		}
-
-		if (!isModalOverflowing) {
-			this._element.style.overflowY = 'hidden';
-		}
-
-		this._element.classList.add(CLASS_NAME_STATIC);
-		this._queueCallback(() => {
-			this._element.classList.remove(CLASS_NAME_STATIC);
-			this._queueCallback(() => {
-				this._element.style.overflowY = initialOverflowY;
-			}, this._dialog);
-		}, this._dialog);
-
-		this._element.focus();
-	}
-
-	/**
-	 * The following methods are used to handle overflowing modals
-	 */
-
-	_adjustDialog() {
-		const isModalOverflowing = this._element.scrollHeight > document.documentElement.clientHeight;
-		const scrollbarWidth = this._scrollBar.getWidth();
-		const isBodyOverflowing = scrollbarWidth > 0;
-
-		if (isBodyOverflowing && !isModalOverflowing) {
-			const property = isRTL() ? 'paddingLeft' : 'paddingRight';
-			this._element.style[property] = `${scrollbarWidth}px`;
-		}
-
-		if (!isBodyOverflowing && isModalOverflowing) {
-			const property = isRTL() ? 'paddingRight' : 'paddingLeft';
-			this._element.style[property] = `${scrollbarWidth}px`;
-		}
-	}
-
-	_resetAdjustments() {
-		this._element.style.paddingLeft = '';
-		this._element.style.paddingRight = '';
-	}
-
-	// Static
 	static jQueryInterface(config, relatedTarget) {
 		return this.each(function () {
-			const data = Modal.getOrCreateInstance(this, config);
+			const data = Lightbox.getOrCreateInstance(this, config);
 
 			if (typeof config !== 'string') {
 				return;
@@ -328,43 +187,16 @@ class Modal extends BaseComponent {
  * Data API implementation
  */
 
-EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_TOGGLE, function (event) {
-	const target = getElementFromSelector(this);
+EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_TOGGLE, Lightbox.initialize);
 
-	if (['A', 'AREA'].includes(this.tagName)) {
-		event.preventDefault();
-	}
+enableDismissTrigger(Lightbox);
 
-	EventHandler.one(target, EVENT_SHOW, (showEvent) => {
-		if (showEvent.defaultPrevented) {
-			// only register focus restorer if modal will actually get shown
-			return;
-		}
-
-		EventHandler.one(target, EVENT_HIDDEN, () => {
-			if (isVisible(this)) {
-				this.focus();
-			}
-		});
-	});
-
-	// avoid conflict when clicking modal toggler while another one is open
-	const alreadyOpen = SelectorEngine.findOne(OPEN_SELECTOR);
-	if (alreadyOpen) {
-		Modal.getInstance(alreadyOpen).hide();
-	}
-
-	const data = Modal.getOrCreateInstance(target);
-
-	data.toggle(this);
-});
-
-enableDismissTrigger(Modal);
+// EventHandler.off(document, Lightbox.EVENT_CLICK_DATA_API);
 
 /**
  * jQuery
  */
 
-defineJQueryPlugin(Modal);
+defineJQueryPlugin(Lightbox);
 
-export default Modal;
+export default Lightbox;
