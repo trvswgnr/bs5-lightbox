@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = {
 	entry: './src/index.js',
@@ -20,5 +21,8 @@ module.exports = {
 	},
 	externals: {
 		bootstrap: 'bootstrap'
+	},
+	optimization: {
+		minimizer: [new TerserPlugin({ extractComments: false })]
 	}
 };
