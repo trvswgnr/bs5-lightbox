@@ -27,10 +27,10 @@
     "url": "git+https://github.com/trvswgnr/bs5-lightbox.git"
   },
   "scripts": {
-    "build": "webpack --mode=development --config webpack.module.js && webpack --mode=development --config webpack.cdn.js",
+    "build": "webpack --mode=production --config webpack.module.js && webpack --mode=production --config webpack.cdn.js",
     "start": "webpack --watch --mode=production --config webpack.module.js",
     "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
-    "lint": "eslint src --ext .js,.ts"
+    "lint": "eslint src --ext .js"
   },
   "peerDependencies": {
     "bootstrap": "^5.0.0"
