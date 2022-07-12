@@ -146,7 +146,7 @@ class Lightbox {
 				<span class="carousel-control-next-icon" aria-hidden="true"></span>
 				<span class="visually-hidden">Next</span>
 			</button>`;
-		let classes = 'lightbox-carousel carousel';
+		let classes = 'lightbox-carousel carousel slide';
 		if (this.settings.size === 'fullscreen') {
 			classes += ' position-absolute w-100 translate-middle top-50 start-50';
 		}
