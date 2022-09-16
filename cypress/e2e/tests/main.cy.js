@@ -51,7 +51,8 @@ describe('basic functionality', () => {
 
 		cy.get('.btn-close').should('have.length', 1).click()
 
-		cy.wait(500) // wait for animation to finish
+		// wait for animation to finish
+		cy.wait(500)
 
 		cy.get('.lightbox-carousel').should('not.exist')
 	})
