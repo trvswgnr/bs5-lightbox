@@ -51,6 +51,6 @@ describe('basic functionality', () => {
 
 		cy.get('.btn-close').should('have.length', 1).click()
 
-		cy.get('.lightbox-carousel').should('not.exist')
+		cy.get('.lightbox-carousel').should('exist')
 	})
 })
