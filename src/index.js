@@ -79,6 +79,17 @@ class Lightbox {
 		const matches = src.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/);
 		return matches && matches[2].length === 11 ? matches[2] : false;
 	}
+	getYoutubeLink(src) {
+		const youtubeId = this.getYoutubeId(src);
+		if (!youtubeId) {
+			return 'false';
+		}
+
+		const arr = src.split('?');
+		let params = arr.length > 1 ? '?' + arr[1] : '';
+		
+		return `https://www.youtube.com/embed/${youtubeId}${params}`;
+	}
 	getInstagramEmbed(src) {
 		if (/instagram/.test(src)) {
 			src += /\/embed$/.test(src) ? '' : '/embed';
@@ -109,10 +120,10 @@ class Lightbox {
 				let inner = `<img src="${src}" class="d-block ${imgClasses} img-fluid" style="z-index: 1; object-fit: contain;" />`;
 				let attributes = '';
 				const instagramEmbed = this.getInstagramEmbed(src);
-				const youtubeId = this.getYoutubeId(src);
+				const youtubeLink = this.getYoutubeLink(src);
 				if (this.isEmbed(src) && !isForcedImage) {
-					if (youtubeId) {
-						src = `https://www.youtube.com/embed/${youtubeId}`;
+					if (youtubeLink) {
+						src = youtubeLink;
 						attributes = 'title="YouTube video player" frameborder="0" allow="accelerometer autoplay clipboard-write encrypted-media gyroscope picture-in-picture"';
 					}
 					inner = instagramEmbed || `<iframe src="${src}" ${attributes} allowfullscreen></iframe>`;
