@@ -35,10 +35,9 @@
     "start": "webpack --watch --mode=production --config webpack.module.js",
     "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
     "lint": "eslint src --ext .js,.ts",
-    "test-server": "http-server",
-    "test-start": "cypress open",
-    "test": "concurrently --kill-others \"npm run test-server\" \"npm run test-start\""
-    
+    "test:server": "http-server -p 3030",
+    "test:run": "cypress run",
+    "test": "start-server-and-test test:server http://localhost:3030 test:run"
   },
   "funding": "https://github.com/sponsors/trvswgnr",
   "devDependencies": {
@@ -52,9 +51,11 @@
     "eslint": "^8.23.1",
     "http-server": "^14.1.1",
     "prettier": "^2.4.1",
+    "start-server-and-test": "^1.14.0",
     "terser-webpack-plugin": "^5.2.4",
     "ts-loader": "^9.2.6",
     "typescript": "^4.4.3",
+    "wait-on": "^6.0.1",
     "webpack": "^5.56.1",
     "webpack-cli": "^4.8.0",
     "webpack-merge": "^5.8.0"
