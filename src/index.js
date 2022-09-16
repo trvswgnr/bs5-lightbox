@@ -117,7 +117,14 @@ class Lightbox {
 					src = src.replace(regex, '');
 				}
 				const imgClasses = this.settings.constrain ? 'mw-100 mh-100 h-auto w-auto m-auto top-0 end-0 bottom-0 start-0' : 'h-100 w-100';
-				let inner = `<img src="${src}" class="d-block ${imgClasses} img-fluid" style="z-index: 1; object-fit: contain;" />`;
+				const params = new URLSearchParams(src.split('?')[1]);
+				let caption = '';
+				const url = new URL(src);
+				if (params.get('caption')) {
+					url.searchParams.delete('caption');
+					caption = `<p class="lightbox-caption m-0 p-2 text-center text-white small"><em>${params.get('caption')}</em></p>`;
+				}
+				let inner = `<img src="${url.toString()}" class="d-block ${imgClasses} img-fluid" style="z-index: 1; object-fit: contain;" />`;
 				let attributes = '';
 				const instagramEmbed = this.getInstagramEmbed(src);
 				const youtubeLink = this.getYoutubeLink(src);
@@ -132,11 +139,6 @@ class Lightbox {
 					inner = src;
 				}
 				const spinner = `<div class="position-absolute top-50 start-50 translate-middle text-white"><div class="spinner-border" style="width: 3rem height: 3rem" role="status"></div></div>`;
-				const params = new URLSearchParams(src.split('?')[1]);
-				let caption = '';
-				if (params.get('caption')) {
-					caption = `<p class="lightbox-caption m-0 p-2 text-center text-white small"><em>${params.get('caption')}</em></p>`;
-				}
 				return `
 				<div class="carousel-item ${!i ? 'active' : ''}" style="min-height: 100px">
 					${spinner}
