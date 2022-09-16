@@ -36,7 +36,6 @@
     "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
     "lint": "eslint src --ext .js,.ts"
   },
-  "bundleDependencies": false,
   "funding": "https://github.com/sponsors/trvswgnr",
   "devDependencies": {
     "@babel/core": "^7.17.8",
@@ -44,7 +43,8 @@
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.33.0",
     "babel-loader": "^8.2.4",
-    "eslint": "^7.32.0",
+    "cypress": "^10.8.0",
+    "eslint": "^8.23.1",
     "prettier": "^2.4.1",
     "terser-webpack-plugin": "^5.2.4",
     "ts-loader": "^9.2.6",
@@ -67,6 +67,5 @@
   "files": [
     "dist/**/*",
     "src/**/*"
-  ],
-  "dependencies": {}
+  ]
 }
