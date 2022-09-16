@@ -34,7 +34,11 @@
     "build": "webpack --mode=production --config webpack.module.js && webpack --mode=production --config webpack.cdn.js",
     "start": "webpack --watch --mode=production --config webpack.module.js",
     "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
-    "lint": "eslint src --ext .js,.ts"
+    "lint": "eslint src --ext .js,.ts",
+    "test-server": "http-server",
+    "test-start": "cypress open",
+    "test": "concurrently --kill-others \"npm run test-server\" \"npm run test-start\""
+    
   },
   "funding": "https://github.com/sponsors/trvswgnr",
   "devDependencies": {
@@ -43,8 +47,10 @@
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.33.0",
     "babel-loader": "^8.2.4",
+    "concurrently": "^7.4.0",
     "cypress": "^10.8.0",
     "eslint": "^8.23.1",
+    "http-server": "^14.1.1",
     "prettier": "^2.4.1",
     "terser-webpack-plugin": "^5.2.4",
     "ts-loader": "^9.2.6",
