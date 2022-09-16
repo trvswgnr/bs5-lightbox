@@ -1,3 +1,6 @@
 node_modules
 package-lock.json
 .DS_STORE
+cypress/screenshots
+cypress/videos
+cypress/logs
