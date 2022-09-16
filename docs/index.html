@@ -697,7 +697,16 @@ document.querySelectorAll('.my-lightbox-toggle').forEach((el) => el.addEventList
     </div>
 
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-	<script src="https://cdn.jsdelivr.net/gh/trvswgnr/bs5-lightbox@main/dist/index.bundle.min.js"></script> 
+	<script id="bs5-lightbox"></script>
+	<script>
+		var lightboxScript = document.getElementById('bs5-lightbox');
+		var src = 'https://cdn.jsdelivr.net/gh/trvswgnr/bs5-lightbox@main/dist/index.bundle.min.js';
+		var searchParams = new URLSearchParams(window.location.search);
+		if (searchParams.has('debug')) {
+			src = "../dist/index.js";
+		}
+		lightboxScript.src = src;
+	</script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/12.2.0/markdown-it.min.js" integrity="sha512-cTQeM/op796Fp1ZUxfech8gSMLT/HvrXMkRGdGZGQnbwuq/obG0UtcL04eByVa99qJik7WlnlQOr5/Fw5B36aw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
 	<script>
