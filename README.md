@@ -29,7 +29,7 @@ npm i bs5-lightbox
 
 ##### CDN:
 ```html
-<script src="https://cdn.jsdelivr.net/npm/bs5-lightbox@1.8.1/dist/index.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bs5-lightbox@1.8.2/dist/index.bundle.min.js"></script>
 ```
 
 Or [download the file directly](https://raw.githubusercontent.com/trvswgnr/bs5-lightbox/main/dist/index.bundle.min.js) (right-click, Save As...)

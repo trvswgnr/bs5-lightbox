@@ -1,5 +1,5 @@
 /*!
- * Lightbox for Bootstrap 5 v1.8.1 (https://trvswgnr.github.io/bs5-lightbox/)
+ * Lightbox for Bootstrap 5 v1.8.2 (https://trvswgnr.github.io/bs5-lightbox/)
  * Copyright 2022 Travis Aaron Wagner (https://github.com/trvswgnr/)
  * Licensed under MIT (https://github.com/trvswgnr/bs5-lightbox/blob/main/LICENSE)
  */
