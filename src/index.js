@@ -82,7 +82,7 @@ class Lightbox {
 	getYoutubeLink(src) {
 		const youtubeId = this.getYoutubeId(src);
 		if (!youtubeId) {
-			return 'false';
+			return false;
 		}
 
 		const arr = src.split('?');
