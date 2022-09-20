@@ -415,7 +415,7 @@ import 'bs5-lightbox';
 
 Or grab the latest JS from the CDN and add it after Bootstrap's JS:
 </div>
-<pre><code class="language-html">&lt;script src="https://cdn.jsdelivr.net/npm/bs5-lightbox@1.8.1/dist/index.bundle.min.js"&gt;&lt;/script&gt;</code></pre>
+<pre><code class="language-html">&lt;script src="https://cdn.jsdelivr.net/npm/bs5-lightbox@1.8.2/dist/index.bundle.min.js"&gt;&lt;/script&gt;</code></pre>
 <div class="markdown">
 Or [download the file directly](https://raw.githubusercontent.com/trvswgnr/bs5-lightbox/main/dist/index.bundle.min.js) (right-click, Save As...)
 
@@ -700,10 +700,12 @@ document.querySelectorAll('.my-lightbox-toggle').forEach((el) => el.addEventList
 	<script id="bs5-lightbox"></script>
 	<script>
 		var lightboxScript = document.getElementById('bs5-lightbox');
-		var src = 'https://cdn.jsdelivr.net/gh/trvswgnr/bs5-lightbox@main/dist/index.bundle.min.js';
+		var src = 'https://cdn.jsdelivr.net/npm/bs5-lightbox@latest/dist/index.bundle.min.js'
 		var searchParams = new URLSearchParams(window.location.search);
-		if (searchParams.has('debug')) {
+		if (searchParams.has('local')) {
 			src = "../dist/index.js";
+		} else if (searchParams.has('github')) {
+			src = 'https://cdn.jsdelivr.net/gh/trvswgnr/bs5-lightbox@main/dist/index.bundle.min.js';
 		}
 		lightboxScript.src = src;
 	</script>
