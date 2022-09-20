@@ -2,7 +2,7 @@
 
 describe('basic functionality', () => {
 	beforeEach(() => {
-		cy.visit('http://localhost:3030/docs/?debug=true')
+		cy.visit('http://localhost:3030/docs/?local=true')
 	})
 
 	it('correctly renders single image', () => {
