@@ -20,6 +20,7 @@ Use [Issues](https://github.com/trvswgnr/bs5-lightbox/issues) to request new fea
 [![npm version](https://badgen.net/npm/v/bs5-lightbox?cache=600)](https://www.npmjs.com/package/bs5-lightbox)
 ![Libraries.io dependency status for latest release](https://img.shields.io/librariesio/release/npm/bs5-lightbox)
 [![Featured on Openbase](https://badges.openbase.com/js/featured/bs5-lightbox.svg?token=R2MqRDwb93ap0dYGkIBBPigErEYve+e1dnfTDZImQog=)](https://openbase.com/js/bs5-lightbox)
+[![kandi X-Ray](https://kandi.openweaver.com/badges/xray.svg)](https://kandi.openweaver.com/javascript/trvswgnr/bs5-lightbox)
 
 ## Installation
 ##### Install with NPM:
