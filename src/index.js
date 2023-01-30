@@ -20,13 +20,13 @@ class Lightbox {
 			size: 'xl',
 			constrain: true
 		});
+		this.settings = Object.assign(Object.assign({}, this.settings), options);
 		this.modalOptions = (() => this.setOptionsFromSettings(bootstrap.Modal.Default))();
 		this.carouselOptions = (() => this.setOptionsFromSettings(bootstrap.Carousel.Default))();
 		if (typeof el === 'string') {
 			this.settings.target = el;
 			el = document.querySelector(this.settings.target);
 		}
-		this.settings = Object.assign(Object.assign({}, this.settings), options);
 		this.el = el;
 		this.type = el.dataset.type || '';
 
