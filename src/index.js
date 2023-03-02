@@ -5,7 +5,9 @@
  * @module bs5-lightbox
  */
 
-import { Modal, Carousel } from 'bootstrap';
+import Modal from 'bootstrap/js/dist/Modal';
+import Carousel from 'bootstrap/js/dist/carousel';
+
 const bootstrap = {
 	Modal,
 	Carousel
