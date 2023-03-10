@@ -169,11 +169,18 @@ class Lightbox {
 		if (this.settings.size === 'fullscreen') {
 			classes += ' position-absolute w-100 translate-middle top-50 start-50';
 		}
+		const indicatorsHtml = `
+			<div class="carousel-indicators">
+				${this.sources.map((_, index) => `
+					<button type="button" data-bs-target="#lightboxCarousel-${this.hash}" data-bs-slide-to="${index}" class="${index === 0 ? 'active' : ''}" aria-current="${index === 0 ? 'true' : 'false'}" aria-label="Slide ${index + 1}"></button>
+				`).join('')}
+			</div>`;
 		const html = `
 			<div id="lightboxCarousel-${this.hash}" class="${classes}" data-bs-ride="carousel" data-bs-interval="${this.carouselOptions.interval}">
 				<div class="carousel-inner">
 					${slidesHtml}
 				</div>
+				${indicatorsHtml}
 				${controlsHtml}
 			</div>`;
 		template.innerHTML = html.trim();
