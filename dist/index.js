@@ -128,7 +128,8 @@ class Lightbox {
 			size: 'xl',
 			constrain: true,
 			prevLabel: 'Previous',
-			nextLabel: 'Next'
+			nextLabel: 'Next',
+			closeButtonInner: undefined
 		});
 		this.settings = Object.assign(Object.assign({}, this.settings), options);
 		this.modalOptions = (() => this.setOptionsFromSettings(bootstrap.Modal.Default))();
@@ -325,6 +326,7 @@ class Lightbox {
 	createModal() {
 		const template = document.createElement('template');
 		const btnInner =
+			this.settings.closeButtonInner ||
 			'<svg xmlns="http://www.w3.org/2000/svg" style="position: relative; top: -5px;" viewBox="0 0 16 16" fill="#fff"><path d="M.293.293a1 1 0 011.414 0L8 6.586 14.293.293a1 1 0 111.414 1.414L9.414 8l6.293 6.293a1 1 0 01-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 01-1.414-1.414L6.586 8 .293 1.707a1 1 0 010-1.414z"/></svg>';
 		const html = `
 			<div class="modal lightbox fade" id="lightboxModal-${this.hash}" tabindex="-1" aria-hidden="true">
