@@ -5,20 +5,24 @@
  * @module bs5-lightbox
  */
 
-import { Modal, Carousel } from 'bootstrap';
+import { Carousel, Modal } from 'bootstrap';
 const bootstrap = {
 	Modal,
 	Carousel
 };
 class Lightbox {
 	constructor(el, options = {}) {
+		console.debug('Lightbox', el, options);
 		this.hash = this.randomHash();
 		this.settings = Object.assign(Object.assign(Object.assign({}, bootstrap.Modal.Default), bootstrap.Carousel.Default), {
 			interval: false,
 			target: '[data-toggle="lightbox"]',
 			gallery: '',
 			size: 'xl',
-			constrain: true
+			constrain: true,
+			prevLabel: 'Previous',
+			nextLabel: 'Next',
+			closeButtonInner: undefined
 		});
 		this.settings = Object.assign(Object.assign({}, this.settings), options);
 		this.modalOptions = (() => this.setOptionsFromSettings(bootstrap.Modal.Default))();
@@ -87,7 +91,7 @@ class Lightbox {
 
 		const arr = src.split('?');
 		let params = arr.length > 1 ? '?' + arr[1] : '';
-		
+
 		return `https://www.youtube.com/embed/${youtubeId}${params}`;
 	}
 	getInstagramEmbed(src) {
@@ -159,11 +163,11 @@ class Lightbox {
 				: `
 			<button id="#lightboxCarousel-${this.hash}-prev" class="carousel-control carousel-control-prev h-75 m-auto" type="button" data-bs-target="#lightboxCarousel-${this.hash}" data-bs-slide="prev">
 				<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-				<span class="visually-hidden">Previous</span>
+				<span class="visually-hidden">${this.settings.prevLabel}</span>
 			</button>
 			<button id="#lightboxCarousel-${this.hash}-next" class="carousel-control carousel-control-next h-75 m-auto" type="button" data-bs-target="#lightboxCarousel-${this.hash}" data-bs-slide="next">
+				<span class="visually-hidden">${this.settings.nextLabel}</span>
 				<span class="carousel-control-next-icon" aria-hidden="true"></span>
-				<span class="visually-hidden">Next</span>
 			</button>`;
 		let classes = 'lightbox-carousel carousel slide';
 		if (this.settings.size === 'fullscreen') {
@@ -215,6 +219,7 @@ class Lightbox {
 	createModal() {
 		const template = document.createElement('template');
 		const btnInner =
+			this.settings.closeButtonInner ||
 			'<svg xmlns="http://www.w3.org/2000/svg" style="position: relative; top: -5px;" viewBox="0 0 16 16" fill="#fff"><path d="M.293.293a1 1 0 011.414 0L8 6.586 14.293.293a1 1 0 111.414 1.414L9.414 8l6.293 6.293a1 1 0 01-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 01-1.414-1.414L6.586 8 .293 1.707a1 1 0 010-1.414z"/></svg>';
 		const html = `
 			<div class="modal lightbox fade" id="lightboxModal-${this.hash}" tabindex="-1" aria-hidden="true">
