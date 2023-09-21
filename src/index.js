@@ -87,7 +87,7 @@ class Lightbox {
 
 		const arr = src.split('?');
 		let params = arr.length > 1 ? '?' + arr[1] : '';
-		
+
 		return `https://www.youtube.com/embed/${youtubeId}${params}`;
 	}
 	getInstagramEmbed(src) {
@@ -170,7 +170,7 @@ class Lightbox {
 			classes += ' position-absolute w-100 translate-middle top-50 start-50';
 		}
 		const html = `
-			<div id="lightboxCarousel-${this.hash}" class="${classes}" data-bs-ride="carousel" data-bs-interval="${this.carouselOptions.interval}">
+			<div id="lightboxCarousel-${this.hash}" class="${classes}">
 				<div class="carousel-inner">
 					${slidesHtml}
 				</div>
