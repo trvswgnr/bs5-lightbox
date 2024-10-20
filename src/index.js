@@ -18,7 +18,8 @@ class Lightbox {
 			target: '[data-toggle="lightbox"]',
 			gallery: '',
 			size: 'xl',
-			constrain: true
+			constrain: true,
+			ride: 'carousel'
 		});
 		this.settings = Object.assign(Object.assign({}, this.settings), options);
 		this.modalOptions = (() => this.setOptionsFromSettings(bootstrap.Modal.Default))();
@@ -170,7 +171,7 @@ class Lightbox {
 			classes += ' position-absolute w-100 translate-middle top-50 start-50';
 		}
 		const html = `
-			<div id="lightboxCarousel-${this.hash}" class="${classes}" data-bs-ride="carousel" data-bs-interval="${this.carouselOptions.interval}">
+			<div id="lightboxCarousel-${this.hash}" class="${classes}" data-bs-ride="${this.carouselOptions.ride}" data-bs-interval="${this.carouselOptions.interval}">
 				<div class="carousel-inner">
 					${slidesHtml}
 				</div>
