@@ -369,6 +369,7 @@
 							</a>
 							<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
 								<li class=""><a href="#single-image" class="dropdown-item">Single Image</a></li>
+								<li class=""><a href="#lightbox-sizes" class="dropdown-item">Lightbox Sizes</a></li>
 								<li class=""><a href="#image-gallery" class="dropdown-item">Image Gallery</a></li>
 								<li class=""><a href="#videos" class="dropdown-item">Videos</a></li>
 								<li class=""><a href="#videos-gallery" class="dropdown-item">Gallery of Videos</a></li>
@@ -419,6 +420,7 @@
 				<li class="list-group-item"><a href="#examples-nav" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="examples-nav"><span class="dropdown-toggle"></span>Examples</span></a></li>
 				<ul class="list-group-item list-group list-group-flush p-0 collapse" id="examples-nav">
 					<li class="list-group-item"><a href="#single-image">Single Image</a></li>
+					<li class="list-group-item"><a href="#lightbox-sizes">Lightbox Sizes</a></li>
 					<li class="list-group-item"><a href="#image-gallery">Image Gallery</a></li>
 					<li class="list-group-item"><a href="#videos">Videos</a></li>
 					<li class="list-group-item"><a href="#videos-gallery">Gallery of Videos</a></li>
@@ -503,7 +505,7 @@ Obviously, you need Bootstrap (made for Bootstrap 5).
 		<td><code>size</code></td>
 		<td>'default' | 'sm' | 'lg' | 'xl' | 'fullscreen'</td>
 		<td><code>'xl'</code></td>
-		<td>Size of lightbox</td>
+		<td>Size of lightbox. Can also be controlled via <code>data-size</code> attribute on the trigger element.</td>
 	  </tr>
 	  <tr>
 		<td><code>constrain</code></td>
@@ -547,6 +549,29 @@ document.querySelectorAll('.my-lightbox-toggle').forEach((el) => el.addEventList
 	</div>
 </div>
 <div class="markdown" id="example-1"></div>
+
+<div id="lightbox-sizes" class="link-anchor"></div>
+<h3>Lightbox Sizes</h3>
+<p>Control the size of the lightbox using the <code>data-size</code> attribute. Available sizes: 'default', 'sm', 'lg', 'xl', 'fullscreen'.</p>
+<div class="row justify-content-center">
+	<div class="col-md-8" data-code="example-sizes">
+		<div class="row">
+			<a href="https://unsplash.it/1200/768.jpg?image=251" data-toggle="lightbox" data-size="sm" class="col-sm-4">
+				<img src="https://unsplash.it/600.jpg?image=251" class="img-fluid">
+				<p class="text-center mt-2">Small (sm)</p>
+			</a>
+			<a href="https://unsplash.it/1200/768.jpg?image=252" data-toggle="lightbox" data-size="lg" class="col-sm-4">
+				<img src="https://unsplash.it/600.jpg?image=252" class="img-fluid">
+				<p class="text-center mt-2">Large (lg)</p>
+			</a>
+			<a href="https://unsplash.it/1200/768.jpg?image=253" data-toggle="lightbox" data-size="fullscreen" class="col-sm-4">
+				<img src="https://unsplash.it/600.jpg?image=253" class="img-fluid">
+				<p class="text-center mt-2">Fullscreen</p>
+			</a>
+		</div>
+	</div>
+</div>
+<div class="markdown" id="example-sizes"></div>
 
 <div id="image-gallery" class="link-anchor"></div>
 <h3>Image Gallery</h3>
