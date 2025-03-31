@@ -30,6 +30,11 @@ class Lightbox {
 		this.el = el;
 		this.type = el.dataset.type || '';
 
+		// check for data-size attribute
+		if (el.dataset.size) {
+			this.settings.size = el.dataset.size;
+		}
+
 		this.src = this.getSrc(el);
 		this.sources = this.getGalleryItems();
 		this.createCarousel();
@@ -87,7 +92,7 @@ class Lightbox {
 
 		const arr = src.split('?');
 		let params = arr.length > 1 ? '?' + arr[1] : '';
-		
+
 		return `https://www.youtube.com/embed/${youtubeId}${params}`;
 	}
 	getInstagramEmbed(src) {
